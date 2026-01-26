@@ -358,14 +358,14 @@ export default {
           <a
             download="Hbib Bekir Resume.pdf"
             :href="resumeFr"
-            class="flex items-center gap-1 p-2 rounded-xl bg-gray-200 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600"
+            class="flex items-center gap-1 p-2 rounded-lg bg-blue-700 hover:bg-blue-800 text-white shadow"
             ><span class="material-symbols-outlined">download</span> Resume
             FR</a
           >
           <a
             download="Hbib Bekir Resume.pdf"
             :href="resumeEn"
-            class="flex items-center gap-1 p-2 rounded-xl bg-gray-200 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600"
+            class="flex items-center gap-1 p-2 rounded-lg bg-blue-700 hover:bg-blue-800 text-white shadow"
             ><span class="material-symbols-outlined">download</span> Resume
             EN</a
           >

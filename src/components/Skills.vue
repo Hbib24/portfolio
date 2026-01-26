@@ -2,6 +2,7 @@
 export default {
   data() {
     return {
+      visibleSections: [],
       skills: {
         languages: [
           { name: "Javscript", icon: "javascript-original" },
@@ -48,32 +49,32 @@ export default {
     };
   },
   mounted() {
-    window.addEventListener("scroll", this.handleScroll);
+    this.checkVisibility();
+    window.addEventListener("scroll", this.checkVisibility);
   },
-  destroyed() {
-    window.removeEventListener("scroll", this.handleScroll);
+  beforeUnmount() {
+    window.removeEventListener("scroll", this.checkVisibility);
   },
   methods: {
-    handleScroll() {
+    checkVisibility() {
       const skillsDivs = document.querySelectorAll(".skill-div");
-      skillsDivs.forEach((skillDiv) => {
-        const isInViewport = this.isElementInViewport(skillDiv);
-        if (!skillDiv.classList.contains("animate__fadeInUp")) {
-          skillDiv.classList.add("animate__fadeInUp", isInViewport);
-          skillDiv.classList.remove("hidden", isInViewport);
+      const windowHeight = window.innerHeight;
+
+      skillsDivs.forEach((element, index) => {
+        const rect = element.getBoundingClientRect();
+        const elementTop = rect.top;
+        const elementBottom = rect.bottom;
+
+        // Element is visible when it's between 20% and 100% of viewport height
+        const isVisible = elementTop < windowHeight * 0.8 && elementBottom > 0;
+
+        if (isVisible && !this.visibleSections.includes(index)) {
+          this.visibleSections.push(index);
         }
       });
     },
-    isElementInViewport(el) {
-      const rect = el.getBoundingClientRect();
-      return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <=
-          (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <=
-          (window.innerWidth || document.documentElement.clientWidth)
-      );
+    isVisible(index) {
+      return this.visibleSections.includes(index);
     },
   },
 };
@@ -84,8 +85,14 @@ export default {
     <div
       v-for="(skillCategory, index) in Object.keys(skills)"
       :key="index"
-      class="mb-24 skill-div animate__animated hidden"
-      :style="{ 'animation-delay': 500 * ++index + 'ms' }"
+      class="mb-24 skill-div animate__animated"
+      :class="{
+        animate__fadeInUp: isVisible(index),
+        'opacity-0': !isVisible(index),
+      }"
+      :style="{
+        'animation-delay': isVisible(index) ? index * 150 + 'ms' : '0ms',
+      }"
     >
       <div
         class="w-full border-b border-gray-400 dark:border-gray-700 mb-4 pb-4"
@@ -99,7 +106,7 @@ export default {
           :href="`https://www.google.com/search?q=${skill.name}`"
           target="_blank"
           v-for="skill in skills[skillCategory]"
-          class="bg-white dark:bg-slate-950 rounded-2xl flex items-center justify-center flex-col gap-4 p-6 w-40 h-40 duration-300 hover:shadow-2xl hover:-translate-y-2"
+          class="bg-white dark:bg-slate-950 rounded-2xl flex items-center justify-center flex-col gap-4 p-6 w-40 h-40 duration-300 shadow hover:shadow-2xl hover:-translate-y-2"
         >
           <img
             class="w-1/2"
