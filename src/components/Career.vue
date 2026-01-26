@@ -104,7 +104,7 @@ export default {
             }}</time
           >
           <div
-            class="rounded-2xl hover:shadow-2xl shadow-sm hover:scale-105 duration-300 border border-slate-200 dark:border-slate-800 bg-white md:bg-white dark:bg-slate-950 dark:md:bg-slate-900 w-full md:m-6 md:flex-row flex flex-col"
+            class="rounded-2xl hover:shadow-xl shadow hover:scale-103 duration-300 border border-slate-200 dark:border-slate-800 bg-white md:bg-white dark:bg-slate-950 dark:md:bg-slate-900 w-full md:m-6 md:flex-row flex flex-col"
           >
             <div
               :class="
@@ -114,7 +114,7 @@ export default {
             >
               <img
                 v-if="project.images[0]"
-                class="w-full absolute"
+                class="md:w-[90%] absolute"
                 :src="project.images[0]"
                 alt=""
               />
@@ -131,7 +131,9 @@ export default {
                 />
               </svg>
             </div>
-            <div class="md:w-3/5 flex flex-col gap-8 p-4">
+            <div
+              class="md:w-3/5 flex flex-col gap-8 p-4 border-l dark:border-none border-gray-200"
+            >
               <div>
                 <h5
                   class="text-3xl font-bold text-slate-950 dark:text-white mb-2"
@@ -150,10 +152,10 @@ export default {
               <div class="flex flex-wrap gap-4">
                 <div
                   v-for="icon in project.icons"
-                  class="rounded-sm bg-gray-100 dark:bg-slate-950 text-slate-950 dark:text-white p-1 px-2 flex gap-2 items-center"
+                  class="rounded-sm bg-gray-100 dark:bg-slate-950 text-slate-950 dark:text-white p-2 flex gap-2 items-center"
                 >
                   <img
-                    class="w-8 h-8"
+                    class="w-6"
                     :src="`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${
                       icon.split('-')[0]
                     }/${icon}.svg`"
