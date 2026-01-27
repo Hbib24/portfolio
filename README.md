@@ -1,4 +1,4 @@
-# portfolio-2024-v2
+# portfolio
 
 This template should help get you started developing with Vue 3 in Vite.
 

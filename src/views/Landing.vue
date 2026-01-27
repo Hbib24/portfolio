@@ -325,27 +325,29 @@ export default {
         class="flex md:flex-row flex-col gap-8 md:gap-0 justify-around items-center mt-12 mb-12 max-w-(--breakpoint-xl) mx-auto p-6"
       >
         <div class="flex flex-col gap-3">
-          <a class="flex items-center gap-2" href="mailto:habib.bekir@gmail.com"
+          <a
+            class="flex items-center gap-2 group"
+            href="mailto:habib.bekir@gmail.com"
             ><span class="material-symbols-outlined"> mail </span>
-            Habib.bekir@gmail.com</a
-          >
-          <div class="flex items-center gap-2">
+            <span class="group-hover:underline">Habib.bekir@gmail.com</span>
+          </a>
+          <a class="flex items-center gap-2 group" href="tel:+21624440222">
             <span class="material-symbols-outlined"> call </span>
             <span class="rounded-sm bg-gray-200 dark:bg-slate-700 px-1"
               >+216</span
             >
-            24 440 222
-          </div>
-          <div class="flex items-center gap-2">
+            <span class="group-hover:underline"> 24 440 222</span>
+          </a>
+          <a class="flex items-center gap-2 group" href="tel:+21699760334">
             <span class="material-symbols-outlined"> call </span>
             <span class="rounded-sm bg-gray-200 dark:bg-slate-700 px-1"
               >+216</span
             >
-            99 760 334
-          </div>
+            <span class="group-hover:underline">99 760 334</span>
+          </a>
         </div>
 
-        <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-3 *:hover:underline">
           <a href="https://github.com/hbib24" target="_blank"
             ><i class="devicon-github-original" /> <span>Github/Hbib24</span></a
           >
