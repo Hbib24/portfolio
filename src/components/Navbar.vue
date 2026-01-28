@@ -162,8 +162,6 @@ export default {
             </a>
             <router-link
               to="/contact"
-            <router-link
-              to="/contact"
               class="block w-full p-4 border-b border-gray-200 cursor-pointer hover:bg-white hover:text-blue-700 focus:outline-hidden focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
             >
               {{ $t("sections.contact") }}
@@ -256,11 +254,6 @@ export default {
               >
             </li>
             <li>
-              <router-link
-                to="/contact"
-                class="block py-2 px-3 rounded-lg bg-blue-700 shadow text-white hover:bg-blue-800"
-                >{{ $t("sections.contact") }}
-              </router-link>
               <router-link
                 to="/contact"
                 class="block py-2 px-3 rounded-lg bg-blue-700 shadow text-white hover:bg-blue-800"
