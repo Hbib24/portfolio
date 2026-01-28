@@ -140,9 +140,7 @@ export default {
                 >
                   {{ project.title }}
                 </h5>
-                <div
-                  class="rounded-sm dark:bg-white bg-slate-800 dark:text-inherit text-white w-fit px-1"
-                >
+                <div class="rounded-sm bg-blue-700 text-white w-fit px-1.5">
                   {{ project.subtitle }}
                 </div>
               </div>
@@ -152,7 +150,7 @@ export default {
               <div class="flex flex-wrap gap-4">
                 <div
                   v-for="icon in project.icons"
-                  class="rounded-sm bg-gray-100 dark:bg-slate-950 text-slate-950 dark:text-white p-2 flex gap-2 items-center"
+                  class="rounded-sm bg-gray-100 dark:bg-slate-950 ring-gray-200 dark:ring-gray-800 ring text-slate-950 dark:text-white p-2 flex gap-2 items-center"
                 >
                   <img
                     class="w-6"

@@ -4,9 +4,10 @@ import Skills from "../components/Skills.vue";
 
 import resumeFr from "../assets/resume-fr.pdf";
 import resumeEn from "../assets/resume-en.pdf";
+import { IconBrandGithubFilled, IconDownload } from "@tabler/icons-vue";
 
 export default {
-  components: { Skills, Career },
+  components: { Skills, Career, IconBrandGithubFilled, IconDownload },
   computed: {
     age() {
       const birthDate = new Date(1998, 3, 24); // Months are 0-indexed: 3 = April
@@ -325,27 +326,29 @@ export default {
         class="flex md:flex-row flex-col gap-8 md:gap-0 justify-around items-center mt-12 mb-12 max-w-(--breakpoint-xl) mx-auto p-6"
       >
         <div class="flex flex-col gap-3">
-          <a class="flex items-center gap-2" href="mailto:habib.bekir@gmail.com"
+          <a
+            class="flex items-center gap-2 group"
+            href="mailto:habib.bekir@gmail.com"
             ><span class="material-symbols-outlined"> mail </span>
-            Habib.bekir@gmail.com</a
-          >
-          <div class="flex items-center gap-2">
+            <span class="group-hover:underline">Habib.bekir@gmail.com</span>
+          </a>
+          <a class="flex items-center gap-2 group" href="tel:+21624440222">
             <span class="material-symbols-outlined"> call </span>
             <span class="rounded-sm bg-gray-200 dark:bg-slate-700 px-1"
               >+216</span
             >
-            24 440 222
-          </div>
-          <div class="flex items-center gap-2">
+            <span class="group-hover:underline"> 24 440 222</span>
+          </a>
+          <a class="flex items-center gap-2 group" href="tel:+21699760334">
             <span class="material-symbols-outlined"> call </span>
             <span class="rounded-sm bg-gray-200 dark:bg-slate-700 px-1"
               >+216</span
             >
-            99 760 334
-          </div>
+            <span class="group-hover:underline">99 760 334</span>
+          </a>
         </div>
 
-        <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-3 *:hover:underline">
           <a href="https://github.com/hbib24" target="_blank"
             ><i class="devicon-github-original" /> <span>Github/Hbib24</span></a
           >
@@ -372,15 +375,23 @@ export default {
         </div>
       </div>
 
-      <span
-        class="text-center text-sm md:text-base flex items-center gap-1 justify-center border-gray-400 dark:border-gray-700 bg-white dark:bg-slate-800 py-4"
+      <div
+        class="text-center text-sm text-white flex items-center gap-1 justify-between bg-gray-950 h-8"
       >
-        This website was made with
-        <span class="material-symbols-outlined animate-bounce text-red-500"
-          >favorite</span
-        >
-        by yours truly
-      </span>
+        <div></div>
+        <span class="flex items-center gap-1">
+          This website was made with
+          <span class="material-symbols-outlined text-red-500">favorite</span>
+          by yours truly
+        </span>
+        <a
+          href="https://github.com/Hbib24/portfolio/tree/v2"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="cursor-pointer flex items-center px-1 hover:bg-gray-800 h-full"
+          ><IconBrandGithubFilled
+        /></a>
+      </div>
     </section>
   </div>
 </template>
