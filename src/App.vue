@@ -11,6 +11,7 @@ export default {
   methods: {
     toggleDarkMode() {
       this.darkMode = !this.darkMode;
+      localStorage.setItem("darkMode", this.darkMode ? 1 : 0);
     },
   },
   created() {
@@ -18,7 +19,9 @@ export default {
     if (urlParams.get("stats")) {
       this.statsMode = true;
     }
-    if (
+    if (localStorage.getItem("darkMode")) {
+      this.darkMode = localStorage.getItem("darkMode") == "1";
+    } else if (
       window.matchMedia &&
       window.matchMedia("(prefers-color-scheme: dark)").matches
     ) {

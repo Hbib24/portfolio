@@ -62,7 +62,7 @@
             </div>
           </div>
           <form
-            class="dark:bg-slate-800 p-8 min-w-[360px] max-w-[400px] md:w-1/3 w-full md:rounded-xl bg-stone-50 md:shadow-lg border dark:border-none flex flex-col gap-8"
+            class="dark:bg-slate-800 p-8 md:min-w-[360px] md:max-w-[400px] md:w-1/3 w-full md:rounded-xl bg-stone-50 md:shadow-lg border dark:border-none flex flex-col gap-8"
             @submit.prevent="handleSubmit"
           >
             <div>

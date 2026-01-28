@@ -194,7 +194,7 @@ export default {
       <div class="overflow-hidden w-full p-6">
         <div class="flex justify-center">
           <div
-            class="max-w-screen-xl text-lg font-normal text-pretty text-gray-900 lg:text-2xl dark:text-gray-400 py-10 md:py-20"
+            class="max-w-screen-md text-lg font-normal text-pretty text-gray-900 lg:text-2xl dark:text-gray-400 py-10 md:py-20"
             v-html="$t('bio', [age])"
           ></div>
         </div>

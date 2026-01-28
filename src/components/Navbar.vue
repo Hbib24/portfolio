@@ -22,6 +22,8 @@ export default {
       const currentIndex = availableLocales.indexOf(currentLocale);
       const nextIndex = (currentIndex + 1) % availableLocales.length;
       this.$i18n.locale = availableLocales[nextIndex];
+
+      localStorage.setItem("locale", this.$i18n.locale);
     },
     isInView(id) {
       const ele = document.getElementById(id);
