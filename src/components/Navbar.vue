@@ -1,5 +1,6 @@
 <script>
 import { IconLanguageHiragana, IconLanguageKatakana } from "@tabler/icons-vue";
+import { getBasePath } from "../utils/config";
 import logoDark from "../assets/logo-dark.svg";
 import logoLight from "../assets/logo-light.svg";
 export default {
@@ -11,6 +12,7 @@ export default {
       logoDark,
       logoLight,
       defaultLocale: this.$i18n.locale,
+      basePath: getBasePath(),
     };
   },
   methods: {
@@ -26,41 +28,25 @@ export default {
       return ele?.getBoundingClientRect().top < window.innerHeight;
     },
     scrollTo(id) {
-      if (
-        this.$router.currentRoute.value.path !== import.meta.env.VITE_BASE_PATH
-      ) {
-        this.$router.push({ path: import.meta.env.VITE_BASE_PATH }).then(() => {
-          this.$nextTick(() => {
-            const ele = document.getElementById(id);
-            console.log(ele);
-            ele?.scrollIntoView({
+      const scrollToElement = () => {
+        this.$nextTick(() => {
+          const ele = document.getElementById(id);
+
+          if (ele) {
+            ele.scrollIntoView({
               behavior: "smooth",
               block: "start",
             });
-          });
+          }
         });
+      };
+
+      if (this.$router.currentRoute.value.path !== "/") {
+        console.log("Navigating to home first");
+        this.$router.push({ path: "/" }).then(setTimeout(scrollToElement, 10));
         return;
       }
-      if (
-        this.$router.currentRoute.value.path !== import.meta.env.VITE_BASE_PATH
-      ) {
-        this.$router.push({ path: import.meta.env.VITE_BASE_PATH }).then(() => {
-          this.$nextTick(() => {
-            const ele = document.getElementById(id);
-            console.log(ele);
-            ele?.scrollIntoView({
-              behavior: "smooth",
-              block: "start",
-            });
-          });
-        });
-        return;
-      }
-      const ele = document.getElementById(id);
-      ele?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+      scrollToElement();
     },
   },
   mounted() {
