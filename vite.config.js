@@ -4,9 +4,9 @@ import vue from "@vitejs/plugin-vue";
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
-
+  console.log("VITE_BASE_PATH:", env.VITE_BASE_PATH);
   return {
-    base: env.VITE_BASE_PATH || "/",
+    base: env.VITE_BASE_PATH || "/portfolio/",
     plugins: [vue()],
   };
 });
