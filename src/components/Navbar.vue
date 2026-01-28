@@ -41,6 +41,21 @@ export default {
         });
         return;
       }
+      if (
+        this.$router.currentRoute.value.path !== import.meta.env.VITE_BASE_PATH
+      ) {
+        this.$router.push({ path: import.meta.env.VITE_BASE_PATH }).then(() => {
+          this.$nextTick(() => {
+            const ele = document.getElementById(id);
+            console.log(ele);
+            ele?.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          });
+        });
+        return;
+      }
       const ele = document.getElementById(id);
       ele?.scrollIntoView({
         behavior: "smooth",
