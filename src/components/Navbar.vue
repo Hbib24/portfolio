@@ -261,11 +261,6 @@ export default {
                 class="block py-2 px-3 rounded-lg bg-blue-700 shadow text-white hover:bg-blue-800"
                 >{{ $t("sections.contact") }}
               </router-link>
-              <router-link
-                to="/contact"
-                class="block py-2 px-3 rounded-lg bg-blue-700 shadow text-white hover:bg-blue-800"
-                >{{ $t("sections.contact") }}
-              </router-link>
             </li>
             <li class="flex gap-2">
               <button
