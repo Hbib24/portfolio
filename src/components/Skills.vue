@@ -39,12 +39,12 @@ export default {
           { name: "Microsoft Sql Server", icon: "microsoftsqlserver-original" },
           { name: "MongoDB", icon: "mongodb-original" },
         ],
-        others: [
-          { name: "Blender", icon: "blender-original" },
-          { name: "Godot", icon: "godot-original" },
-          { name: "Unreal Engine", icon: "unrealengine-original" },
-          { name: "Unity", icon: "unity-original" },
-        ],
+        // others: [
+        //   { name: "Blender", icon: "blender-original" },
+        //   { name: "Godot", icon: "godot-original" },
+        //   { name: "Unreal Engine", icon: "unrealengine-original" },
+        //   { name: "Unity", icon: "unity-original" },
+        // ],
       },
     };
   },
@@ -125,6 +125,18 @@ export default {
           </h2>
         </a>
       </div>
+    </div>
+    <div
+      class="mb-24 mt-54 skill-div animate__animated text-2xl md:text-4xl font-semibold text-gray-500 dark:text-slate-500 text-center"
+      :class="{
+        animate__fadeInUp: isVisible(4),
+        'opacity-0': !isVisible(4),
+      }"
+      :style="{
+        'animation-delay': isVisible(4) ? 4 * 150 + 'ms' : '0ms',
+      }"
+    >
+      {{ $t("Just to name a few...") }}
     </div>
   </div>
 </template>

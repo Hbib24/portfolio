@@ -2,12 +2,29 @@
 import Career from "../components/Career.vue";
 import Skills from "../components/Skills.vue";
 
+import logoDark from "../assets/logo-dark.svg";
+import logoLight from "../assets/logo-light.svg";
+
 import resumeFr from "../assets/resume-fr.pdf";
 import resumeEn from "../assets/resume-en.pdf";
-import { IconBrandGithubFilled, IconDownload } from "@tabler/icons-vue";
+import {
+  IconBrandGithubFilled,
+  IconChevronRight,
+  IconDownload,
+} from "@tabler/icons-vue";
+import Counter from "../components/Counter.vue";
+import Socials from "../components/Socials.vue";
 
 export default {
-  components: { Skills, Career, IconBrandGithubFilled, IconDownload },
+  components: {
+    Skills,
+    Career,
+    IconBrandGithubFilled,
+    IconDownload,
+    Counter,
+    Socials,
+    IconChevronRight,
+  },
   computed: {
     age() {
       const birthDate = new Date(1998, 3, 24); // Months are 0-indexed: 3 = April
@@ -25,11 +42,29 @@ export default {
       scroll: 0,
       resumeFr,
       resumeEn,
+      logoDark,
+      logoLight,
     };
   },
   methods: {
     handleScroll() {
       this.scroll = window.scrollY;
+    },
+    scrollTo(id) {
+      const scrollToElement = () => {
+        this.$nextTick(() => {
+          const ele = document.getElementById(id);
+
+          if (ele) {
+            ele.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      };
+
+      scrollToElement();
     },
   },
   mounted() {
@@ -60,30 +95,21 @@ export default {
               Habib Bekir
             </h1>
             <div
-              class="flex flex-wrap justify-center items-center gap-6 animate__animated animate__fadeInDown"
+              class="flex justify-center items-center gap-6 animate__animated animate__fadeInDown"
               style="animation-delay: 500ms"
             >
-              <p
-                class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400"
+              <router-link
+                to="/contact"
+                class="py-2 px-6 text-lg md:text-xl flex items-center shadow-xl shadow-blue-600/20 gap-4 rounded-lg bg-blue-700 dark:bg-blue-600 text-white hover:bg-blue-800"
+                >{{ $t("sections.contact") }}
+                <IconChevronRight class="w-5 h-5" />
+              </router-link>
+              <a
+                href="#about"
+                @click.prevent="scrollTo('about')"
+                class="py-2 px-6 text-lg md:text-xl rounded-lg border border-slate-500 text-gray-900 dark:text-white dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 duration-150"
+                >{{ $t("Discover") }}</a
               >
-                Fullstack
-              </p>
-              <div
-                class="h-2 w-2 rounded-full bg-gray-500 dark:bg-gray-400"
-              ></div>
-              <p
-                class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400"
-              >
-                Web
-              </p>
-              <div
-                class="h-2 w-2 rounded-full bg-gray-500 dark:bg-gray-400"
-              ></div>
-              <p
-                class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400"
-              >
-                Mobile
-              </p>
             </div>
           </div>
         </div>
@@ -191,6 +217,7 @@ export default {
       id="about"
       class="w-full relative pt-6 z-20 bg-gray-100 md:bg-white dark:bg-slate-900 md:dark:bg-slate-950"
     >
+      <div class="max-w-screen-xl mx-auto my-20"><Counter /></div>
       <div class="overflow-hidden w-full p-6">
         <div class="flex justify-center">
           <div
@@ -323,63 +350,92 @@ export default {
       class="w-full z-20 relative text-lg dark:text-gray-200 dark:bg-slate-950 md:bg-gray-100 bg-white md:dark:bg-slate-900"
     >
       <div
-        class="flex md:flex-row flex-col gap-8 md:gap-0 justify-around items-center mt-12 mb-12 max-w-(--breakpoint-xl) mx-auto p-6"
+        class="max-w-(--breakpoint-xl) mx-auto grid md:grid-cols-5 gap-y-6 xs:grid-cols-2 grid-cols-1 p-6 pb-16 pt-12"
       >
-        <div class="flex flex-col gap-3">
+        <div class="xs:col-span-2">
           <a
-            class="flex items-center gap-2 group"
-            href="mailto:habib.bekir@gmail.com"
-            ><span class="material-symbols-outlined"> mail </span>
-            <span class="group-hover:underline">Habib.bekir@gmail.com</span>
-          </a>
-          <a class="flex items-center gap-2 group" href="tel:+21624440222">
-            <span class="material-symbols-outlined"> call </span>
-            <span class="rounded-sm bg-gray-200 dark:bg-slate-700 px-1"
-              >+216</span
+            href="#"
+            class="flex items-center space-x-3 rtl:space-x-reverse mb-4"
+          >
+            <div>
+              <img :src="logoDark" class="h-10 dark:hidden block" alt="Logo" />
+              <img :src="logoLight" class="h-10 hidden dark:block" alt="Logo" />
+            </div>
+            <span
+              class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+              >Habib Bekir</span
             >
-            <span class="group-hover:underline"> 24 440 222</span>
           </a>
-          <a class="flex items-center gap-2 group" href="tel:+21699760334">
-            <span class="material-symbols-outlined"> call </span>
-            <span class="rounded-sm bg-gray-200 dark:bg-slate-700 px-1"
-              >+216</span
+          <p class="text-pretty dark:text-slate-400">
+            Crafting digital experiences through clean code and modern design.
+            Passionate about building the next generation of the web.
+          </p>
+        </div>
+        <div class="md:block hidden"></div>
+        <div>
+          <div
+            class="self-center font-bold text-sm whitespace-nowrap dark:text-white mb-4"
+          >
+            SECTIONS
+          </div>
+          <div class="flex flex-col gap-2 *:text-sm">
+            <a
+              href="#about"
+              @click.prevent="scrollTo('about')"
+              class="hover:text-blue-600 duration-150 dark:text-slate-400 dark:hover:text-slate-300"
+              >{{ $t("sections.about") }}</a
             >
-            <span class="group-hover:underline">99 760 334</span>
-          </a>
+            <a
+              href="#skills"
+              @click.prevent="scrollTo('skills')"
+              class="hover:text-blue-600 duration-150 dark:text-slate-400 dark:hover:text-slate-300"
+              >{{ $t("sections.skills") }}</a
+            >
+            <a
+              href="#career"
+              @click.prevent="scrollTo('career')"
+              class="hover:text-blue-600 duration-150 dark:text-slate-400 dark:hover:text-slate-300"
+              >{{ $t("sections.background") }}</a
+            >
+            <router-link
+              to="/contact"
+              class="hover:text-blue-600 duration-150 dark:text-slate-400 dark:hover:text-slate-300"
+              >{{ $t("sections.contact") }}</router-link
+            >
+          </div>
         </div>
-
-        <div class="flex flex-col gap-3 *:hover:underline">
-          <a href="https://github.com/hbib24" target="_blank"
-            ><i class="devicon-github-original" /> <span>Github/Hbib24</span></a
+        <div>
+          <div
+            class="self-center font-bold text-sm whitespace-nowrap dark:text-white mb-4"
           >
-          <a href="https://linkedin.com/in/hbib-bekir" target="_blank"
-            ><i class="devicon-linkedin-plain colored" /> In/hbib-bekir</a
-          >
-        </div>
-
-        <div class="flex flex-col gap-3">
-          <a
-            download="Hbib Bekir Resume.pdf"
-            :href="resumeFr"
-            class="flex items-center gap-1 p-2 rounded-lg bg-blue-700 hover:bg-blue-800 text-white shadow"
-            ><span class="material-symbols-outlined">download</span> Resume
-            FR</a
-          >
-          <a
-            download="Hbib Bekir Resume.pdf"
-            :href="resumeEn"
-            class="flex items-center gap-1 p-2 rounded-lg bg-blue-700 hover:bg-blue-800 text-white shadow"
-            ><span class="material-symbols-outlined">download</span> Resume
-            EN</a
-          >
+            {{ $t("DOWNLOAD RESUME") }}
+          </div>
+          <div class="flex flex-col gap-2 *:text-sm">
+            <a
+              :href="resumeEn"
+              download="Habib_Bekir_CV_En.pdf"
+              class="hover:text-blue-600 duration-150 dark:hover:text-slate-300 dark:text-slate-400 flex gap-1 items-center"
+            >
+              <IconDownload class="w-4" />
+              {{ $t("English") }}
+            </a>
+            <a
+              :href="resumeFr"
+              download="Habib_Bekir_CV_Fr.pdf"
+              class="hover:text-blue-600 duration-150 dark:hover:text-slate-300 dark:text-slate-400 flex gap-1 items-center"
+            >
+              <IconDownload class="w-4" />
+              {{ $t("French") }}
+            </a>
+          </div>
         </div>
       </div>
 
       <div
         class="text-center text-sm text-white flex items-center gap-1 justify-between bg-gray-950 h-8"
       >
-        <div></div>
-        <span class="flex items-center gap-1">
+        <div class="hidden md:block"></div>
+        <span class="flex items-center gap-1 px-1">
           This website was made with
           <span class="material-symbols-outlined text-red-500">favorite</span>
           by yours truly

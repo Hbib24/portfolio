@@ -44,7 +44,6 @@ export default {
       };
 
       if (this.$router.currentRoute.value.path !== "/") {
-        console.log("Navigating to home first");
         this.$router.push({ path: "/" }).then(setTimeout(scrollToElement, 10));
         return;
       }
@@ -244,7 +243,7 @@ export default {
             <li>
               <router-link
                 to="/contact"
-                class="block py-2 px-3 rounded-lg bg-blue-700 shadow text-white hover:bg-blue-800"
+                class="block py-2 px-3 rounded-lg bg-blue-700 dark:bg-blue-600 shadow text-white hover:bg-blue-800"
                 >{{ $t("sections.contact") }}
               </router-link>
             </li>
