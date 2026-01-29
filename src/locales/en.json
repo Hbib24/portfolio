@@ -1,5 +1,5 @@
 {
-  "bio": "Hey there.<br />Thanks for checking out my portfolio, I'm delighted to introduce you to my web/mobile development career in which I take great pride and joy. <br />I'm currently {0} years old residing in Tunisia and employed full-time at a rapidly growing startup but also working as a freelancer for various clients, as for my hobbies I'm a geek at heart, since the age of 8 I always loved computers and video games.",
+  "bio": "Hey there.<br /><br />Thanks for checking out my portfolio, I'm delighted to introduce you to my web/mobile Full-stack development career in which I take great pride and joy.",
   "intro": {
     "1": "I design and create with <span class='emphasize-text'>passion</span>, I love a good modern sleek aesthetic that's easy on the eyes, I always seek perfection and <span class=\"emphasize-text\">satisfaction</span> for my clients but also for myself.",
     "2": "<span class='emphasize-text'>Responsive design</span> is a challenge I love to tackle, finding solutions to make the user's experience fluid for any device without compromise.",
@@ -21,6 +21,12 @@
     "euromedi": "Euromedi is an international accreditation for clinics, hospitals, retirement homes and more..., I worked closely with doctors to realize a private application that was part of this accreditation package. the application is mostly designed for tablets as institution personnels carry them around and complete diffrent tasks related to the accreditation and I'am proud to to know that I was part of making the health system somewhat better as the application is in production since 2022. Until today I'm still developping new projects for euromedi remotely.",
     "insight": "Insight plus is a fintech startup based in Tunisia. This was my first experience in a development company, we specialize in making tools for exchange operators and more. We also partnered up with national banks for a currency marketplace platform and we plan to expand our partnership in the near future.",
     "ataa": "Ataa is a mobile app that allows you to connect associations with volunteers, as it's described its a noble effort to help those in need, and I'm proud to work on it's design, backend as well as a feature complete admin dashboard with statistics and basic admin funcionalities. Currently not released to the public but we fully intend on releasing it in the near future."
+  },
+  "contact": {
+    "title": "Let's Get in Touch",
+    "subtitle": "I'm always available for new opportunities or collaborations.\n Feel free to reach out!",
+    "button": "Send Message",
+    "success": "Message successfully sent"
   },
   "languages": "Languages",
   "technologies": "Technologies",

@@ -5,64 +5,21 @@
     <div class="relative">
       <section class="md:h-dvh md:p-6 md:overflow-hidden">
         <div
-          class="md:rounded-2xl h-full md:pt-0 pt-16 w-full bg-white dark:bg-slate-950 shadow-inner flex md:flex-row flex-col items-center justify-center gap-6 md:gap-12 md:overflow-hidden"
+          class="md:rounded-2xl min-h-dvh md:min-h-full md:pt-0 pt-16 w-full bg-white dark:bg-slate-950 shadow-inner flex md:flex-row flex-col items-center justify-end md:justify-center gap-6 md:gap-12 md:overflow-hidden"
         >
           <div class="flex flex-col gap-6 md:max-w-1/3 p-6">
             <h1 class="text-3xl md:text-4xl font-extrabold text-blue-600">
-              Let's Get in Touch
+              {{ $t("contact.title") }}
             </h1>
-            <p class="text-xl md:text-3xl text-pretty dark:text-slate-500">
-              I'm always available for new opportunities or collaborations. Feel
-              free to reach out!
+            <p
+              class="text-xl md:text-3xl text-pretty whitespace-pre-line dark:text-slate-500"
+            >
+              {{ $t("contact.subtitle") }}
             </p>
-            <div class="flex md:justify-start justify-center gap-8">
-              <a
-                href="mailto:habib.bekir@gmail.com"
-                class="bg-stone-50 items-center justify-center dark:bg-slate-800 group w-16 h-16 p-4 rounded-2xl hover:w-64 overflow-hidden flex gap-2 duration-150 shadow cursor-pointer border dark:border-none"
-              >
-                <IconMailFilled
-                  class="w-8 h-8 text-slate-600 group-hover:text-blue-600"
-                />
-                <p
-                  class="group-hover:block text-nowrap hidden dark:text-slate-500 duration-150"
-                >
-                  Habib.bekir@gmail.com
-                </p>
-              </a>
-              <a
-                href="https://github.com/hbib24"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="bg-stone-50 items-center justify-center dark:bg-slate-800 group w-16 h-16 p-4 rounded-2xl hover:w-46 overflow-hidden flex gap-2 duration-150 shadow cursor-pointer border dark:border-none"
-              >
-                <IconBrandGithubFilled
-                  class="w-8 h-8 text-slate-600 group-hover:text-blue-600"
-                />
-                <p
-                  class="group-hover:block text-nowrap hidden dark:text-slate-500 duration-150"
-                >
-                  Github/Hbib24
-                </p>
-              </a>
-              <a
-                class="bg-stone-50 items-center justify-center dark:bg-slate-800 group w-16 h-16 p-2 rounded-2xl hover:w-42 overflow-hidden flex gap-2 duration-150 shadow cursor-pointer border dark:border-none"
-                href="https://www.linkedin.com/in/hbib-bekir/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <IconBrandLinkedinFilled
-                  class="w-8 h-8 text-slate-600 group-hover:text-blue-600"
-                />
-                <p
-                  class="group-hover:block text-nowrap hidden dark:text-slate-500 duration-150"
-                >
-                  In/hbib-bekir
-                </p>
-              </a>
-            </div>
+            <Socials />
           </div>
           <form
-            class="dark:bg-slate-800 p-8 min-w-[360px] max-w-[400px] md:w-1/3 w-full md:rounded-xl bg-stone-50 md:shadow-lg border dark:border-none flex flex-col gap-8"
+            class="dark:bg-slate-900 p-8 md:max-w-md md:w-1/3 w-full md:rounded-xl bg-stone-50 md:shadow-lg border dark:border-none flex flex-col gap-8"
             @submit.prevent="handleSubmit"
           >
             <div>
@@ -100,7 +57,7 @@
               class="bg-green-200 dark:bg-green-400 text-green-600 dark:text-green-800 py-4 p-2 rounded-lg flex items-center justify-center"
             >
               <IconCircleCheckFilled class="mr-2" stroke="{2}" />
-              <p class="font-medium">Message successfully sent</p>
+              <p class="font-medium">{{ $t("contact.success") }}</p>
             </div>
             <div
               v-else-if="failed"
@@ -119,7 +76,7 @@
               type="submit"
               :disabled="loading"
             >
-              Send Message
+              {{ $t("contact.button") }}
               <IconSend2 stroke="{2}" />
             </button>
           </form>
@@ -130,6 +87,7 @@
 </template>
 
 <script>
+import Socials from "../components/Socials.vue";
 import {
   IconBrandGithubFilled,
   IconBrandLinkedinFilled,
@@ -150,9 +108,7 @@ export default {
   components: {
     IconSend2,
     IconCircleCheckFilled,
-    IconBrandGithubFilled,
-    IconMailFilled,
-    IconBrandLinkedinFilled,
+    Socials,
   },
   methods: {
     async handleSubmit(e) {

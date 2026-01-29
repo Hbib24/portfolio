@@ -1,10 +1,18 @@
 {
-  "bio": "Bonjour.<br />Merci d'avoir consulté mon portfolio, je suis ravi de vous présenter ma carrière de développeur web/mobile dont je suis très fier et heureux. <br />J'ai actuellement {0} ans, je réside en Tunisie et je suis employé à temps plein dans une startup en croissance rapide mais je travaille également en freelance pour divers clients, quant à mes passe-temps, je suis un geek dans l'âme, depuis l'âge de 8 ans, j'ai toujours aimé les ordinateurs et les jeux vidéo.",
+  "bio": "Bonjour.<br /><br />Merci d'avoir consulté mon portfolio, je suis ravi de vous présenter ma carrière de développeur Full-stack web/mobile dont je suis très fier.",
   "intro": {
     "1": "Je conçois et crée avec <span class='emphasize-text'>passion</span>, j'adore une esthétique moderne et épurée qui soit agréable à l'œil. Je recherche toujours la perfection et la <span class=\"emphasize-text\">satisfaction</span> de mes clients, mais aussi la mienne.",
     "2": "Le <span class='emphasize-text'>design responsive</span> est un défi que j'aime relever, trouver des solutions pour rendre l'expérience utilisateur fluide sur tous les appareils sans compromis.",
     "3": "Derrière chaque interface fluide se cache un moteur puissant. <br />Je conçois des backends <span class=\"emphasize-text\">évolutifs</span>, sécurisés et efficaces, en veillant à ce que la <span class=\"emphasize-text\">performance</span> et la logique fonctionnent main dans la main. <br />Clean architecture, APIs fluides et flux de données bien structurés, je vise plus que la simple fonctionnalité — je vise l'élégance sous la surface."
   },
+  "projects completed": "Projets réalisés",
+  "years experience": "Années d'expérience",
+  "technologies used": "Technologies utilisées",
+  "Coffee Consumed": "Cafés consommés",
+  "DOWNLOAD RESUME": "TÉLÉCHARGER CV",
+  "English": "Anglais",
+  "French": "Français",
+  "Discover": "Découvrir",
   "sections": {
     "about": "A propos",
     "skills": "Compétences",
@@ -21,6 +29,12 @@
     "euromedi": "Euromedi est une accréditation internationale pour les cliniques, les hôpitaux, les maisons de retraite et plus encore..., j'ai travaillé en étroite collaboration avec des médecins pour réaliser une application privée faisant partie de ce package d'accréditation. l'application est principalement conçue pour les tablettes, car le personnel de l'établissement les transporte et effectue différentes tâches liées à l'accréditation. Je suis fier de savoir que j'ai participé à l'amélioration du système de santé, car l'application est en production depuis 2022. Jusqu'à aujourd'hui, je développe encore de nouveaux projets pour euromedi à distance.",
     "insight": "Insight plus est une startup fintech basée en Tunisie. C'était ma première expérience dans une société de développement, nous sommes spécialisés dans la création d'outils pour les opérateurs de change et plus encore. Nous nous sommes également associés à des banques nationales pour une plateforme de marché des devises et nous prévoyons d'étendre notre partenariat dans un avenir proche.",
     "ataa": "Ataa est une application mobile qui vous permet de connecter des associations avec des bénévoles, comme elle est décrite c'est un noble effort pour aider ceux qui en ont besoin, et je suis fier de travailler sur sa conception, son backend ainsi qu'une dashboard d'administrateurs complete avec des statistiques et fonctionnalités d'administration de base. elle n'est actuellement pas rendu public, mais nous avons bien l'intention de la publier dans un avenir proche."
+  },
+  "contact": {
+    "title": "Entrons en contact",
+    "subtitle": "Je suis toujours disponible pour de nouvelles opportunités ou collaborations.\n N'hésitez pas à me contacter !",
+    "button": "Envoyer un message",
+    "success": "Message envoyé avec succès"
   },
   "languages": "Languages",
   "technologies": "Technologies",

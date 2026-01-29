@@ -13,7 +13,8 @@ import en from "./locales/en.json";
 const queryLanguage = new URLSearchParams(window.location.search).get("lang");
 const browserLanguage = navigator.language.slice(0, 2);
 const i18n = createI18n({
-  locale: queryLanguage || browserLanguage || "en",
+  locale:
+    localStorage.getItem("locale") || queryLanguage || browserLanguage || "en",
   fallbackLocale: queryLanguage || browserLanguage || "en",
   warnHtmlMessage: false,
   messages: {

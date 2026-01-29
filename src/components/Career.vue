@@ -140,7 +140,9 @@ export default {
                 >
                   {{ project.title }}
                 </h5>
-                <div class="rounded-sm bg-blue-700 text-white w-fit px-1.5">
+                <div
+                  class="rounded-sm bg-blue-700 dark:bg-blue-600 text-white w-fit px-1.5"
+                >
                   {{ project.subtitle }}
                 </div>
               </div>

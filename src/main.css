@@ -25,6 +25,7 @@
 }
 
 @theme {
+  --breakpoint-xs: 24rem;
   --breakpoint-intro: 64rem;
 }
 
