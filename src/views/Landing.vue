@@ -87,10 +87,10 @@ export default {
         >
           <div
             :style="{ transform: `translateY(${scroll * 0.5}px)` }"
-            class="flex flex-col h-full items-center justify-center"
+            class="flex flex-col pb-12 gap-6 h-full items-center justify-center"
           >
             <h1
-              class="mb-4 text-4xl tracking-widest font-extrabold leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white animate__animated animate__fadeIn"
+              class="text-4xl tracking-widest font-extrabold leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white animate__animated animate__fadeIn"
             >
               Habib Bekir
             </h1>
