@@ -63,7 +63,7 @@ onMounted(() => {
       <div class="flex flex-col gap-4">
         <div class="h-22.5">
           <IconInfinity
-            class="w-20 h-20 mx-auto sm:mx-0 emphasize-text font-extrabold text-slate-900 dark:text-gray-200"
+            class="w-20 h-20 mx-auto sm:mx-0 text-shadow-lg text-shadow-cyan-600/50 emphasize-text font-extrabold text-slate-900 dark:text-gray-200"
           />
         </div>
         <p
