@@ -17,6 +17,11 @@ export default {
       moment.locale(lang);
     },
   },
+  methods: {
+    getSkillName(icon) {
+      return icon.split("-")[0][0].toUpperCase() + icon.split("-")[0].slice(1);
+    },
+  },
   data() {
     return {
       $moment: moment,
@@ -104,7 +109,7 @@ export default {
             }}</time
           >
           <div
-            class="rounded-2xl hover:shadow-xl shadow hover:scale-103 duration-300 border border-slate-200 dark:border-slate-800 bg-white md:bg-white dark:bg-slate-950 dark:md:bg-slate-900 w-full md:m-6 md:flex-row flex flex-col"
+            class="rounded-2xl shadow duration-300 border border-slate-200 dark:border-slate-800 bg-white md:bg-white dark:bg-slate-950 dark:md:bg-slate-900 w-full md:m-6 md:flex-row flex flex-col"
           >
             <div
               :class="
@@ -150,9 +155,11 @@ export default {
                 {{ $t(`projects.${project.id}`) }}
               </p>
               <div class="flex flex-wrap gap-4">
-                <div
+                <a
                   v-for="icon in project.icons"
-                  class="rounded-sm bg-gray-100 dark:bg-slate-950 ring-gray-200 dark:ring-gray-800 ring text-slate-950 dark:text-white p-2 flex gap-2 items-center"
+                  :href="`https://www.google.com/search?q=${getSkillName(icon)}`"
+                  target="_blank"
+                  class="rounded-sm bg-gray-100 cursor-pointer hover:-translate-y-1 hover:shadow-lg duration-200 dark:bg-slate-950 ring-gray-200 dark:ring-gray-800 ring text-slate-950 dark:text-white p-2 flex gap-2 items-center"
                 >
                   <img
                     class="w-6"
@@ -161,12 +168,9 @@ export default {
                     }/${icon}.svg`"
                   />
                   <div class="">
-                    {{
-                      icon.split("-")[0][0].toUpperCase() +
-                      icon.split("-")[0].slice(1)
-                    }}
+                    {{ getSkillName(icon) }}
                   </div>
-                </div>
+                </a>
               </div>
             </div>
           </div>

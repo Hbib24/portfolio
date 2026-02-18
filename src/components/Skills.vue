@@ -106,7 +106,7 @@ export default {
           :href="`https://www.google.com/search?q=${skill.name}`"
           target="_blank"
           v-for="skill in skills[skillCategory]"
-          class="bg-white dark:bg-slate-950 rounded-2xl flex items-center justify-center flex-col gap-4 p-6 w-40 h-40 duration-300 shadow hover:shadow-2xl hover:-translate-y-2"
+          class="bg-white dark:bg-slate-950 rounded-2xl flex items-center justify-center flex-col gap-4 p-6 w-40 h-40 duration-300 shadow hover:shadow-2xl hover:-translate-y-1"
         >
           <img
             class="w-1/2"
