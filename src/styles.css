@@ -1,0 +1,61 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import 'tailwindcss';
+
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+
+@theme {
+  --color-primary: #09090b;
+  --color-secondary: #fafafa;
+  --color-accent: #2f15f4;
+}
+
+@keyframes my-pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotate(60deg);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes scrollhint {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(7px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Styles text selection globally across the whole page */
+::selection {
+  background-color: var(--color-accent); /* Background color of highlighted text */
+}
+
+/* Mozilla Firefox fallback (for older browser versions) */
+::-moz-selection {
+  background-color: var(--color-accent);
+}
