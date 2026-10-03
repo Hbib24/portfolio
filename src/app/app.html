@@ -1,6 +1,5 @@
 <header
   class="bg-primary/20 backdrop-blur py-4 fixed top-0 z-50 w-full animate__fadeInDown animate__animated"
-  style="animation-delay: 2s"
 >
   <div class="container mx-auto flex justify-between items-center">
     <a href="#hero" class="text-3xl text-secondary select-none">
@@ -9,7 +8,6 @@
     </a>
     <nav>
       <ul class="flex gap-8 text-secondary/80 *:hover:text-secondary font-mono text-lg">
-        <li><a href="#about">About</a></li>
         <li><a href="#work">Work</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -52,7 +50,8 @@
           Engineering refined web &amp; mobile experiences
         </h1>
         <p class="font-mono text-secondary/60 text-sm lg:text-base max-w-xl">
-          Habib Bekir — building fast, resilient products end to end, from schema to pixel.
+          Passion is what drives me to craft seamless, high-performance applications that leave a
+          lasting impact.
         </p>
 
         <!-- scroll hint -->
@@ -505,6 +504,179 @@
       </ol>
     </div>
   </div>
+</section>
+
+<!--
+  Skills: generated from `skills` in app.ts, nothing to edit here when you add one.
+  lg and up: a graph. Core skills sit in the middle, proficient skills on the inner ring and
+  familiar ones on the outer ring, grouped by category. Hovering (or clicking) a skill lights up
+  the skills it was used with and lists the projects in the side panel.
+  Below lg: grouped chips; tapping a skill shows its projects right under its group.
+-->
+<section id="skills" class="relative bg-primary border-t border-secondary/10">
+  <div class="container mx-auto px-6 py-24 lg:py-28">
+    <header class="text-center max-w-2xl mx-auto mb-12 lg:mb-14">
+      <span class="font-mono tracking-[0.3em] text-accent uppercase">Skills</span>
+      <h2 class="font-mono text-3xl lg:text-5xl text-secondary tracking-wide mt-6">
+        What I build with
+      </h2>
+      <p class="font-mono text-secondary/60 text-sm lg:text-base mt-6">
+        <span class="hidden lg:inline">Hover</span><span class="lg:hidden">Tap</span> a skill to see
+        the projects it shows up in.
+      </p>
+    </header>
+
+    <!-- lg and up: graph + detail panel -->
+    <div class="hidden lg:grid lg:grid-cols-[1fr_16rem] xl:grid-cols-[1fr_20rem] gap-8">
+      <div
+        #skillGraph
+        class="relative h-[clamp(480px,64dvh,680px)] rounded-3xl border border-secondary/10 bg-secondary/[0.02] overflow-hidden"
+        (click)="clearPin()"
+      >
+        <svg class="absolute inset-0 size-full pointer-events-none" aria-hidden="true">
+          @for (ring of graphRings(); track $index) {
+            <ellipse
+              cx="50%"
+              cy="50%"
+              fill="none"
+              stroke-dasharray="2 6"
+              class="stroke-secondary/10"
+              [attr.rx]="ring.rx + '%'"
+              [attr.ry]="ring.ry + '%'"
+            />
+          }
+          @for (line of graphLines(); track line.id) {
+            <line
+              stroke-width="1"
+              class="stroke-accent/50"
+              [attr.x1]="line.x1 + '%'"
+              [attr.y1]="line.y1 + '%'"
+              [attr.x2]="line.x2 + '%'"
+              [attr.y2]="line.y2 + '%'"
+            />
+          }
+        </svg>
+
+        @for (node of graphNodes(); track node.id) {
+          @if (node.skill; as skill) {
+            <button
+              type="button"
+              class="absolute -translate-x-1/2 -translate-y-1/2"
+              [class]="skillClass(skill)"
+              [style.left.%]="node.x"
+              [style.top.%]="node.y"
+              [attr.aria-pressed]="pinnedSlug() === skill.slug"
+              (pointerenter)="hoverSkill($event, skill.slug)"
+              (pointerleave)="unhoverSkill($event)"
+              (click)="pinSkill($event, skill.slug)"
+            >
+              <img [class]="iconClass(skill)" [src]="iconUrl(skill.slug)" alt="" loading="lazy" />
+              {{ skill.name }}
+            </button>
+          } @else {
+            <span
+              class="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-mono text-[11px] tracking-[0.2em] text-secondary/30 uppercase pointer-events-none"
+              [style.left.%]="node.x"
+              [style.top.%]="node.y"
+              >{{ node.label }}</span
+            >
+          }
+        }
+      </div>
+
+      <aside
+        class="rounded-3xl border border-secondary/10 bg-secondary/[0.03] backdrop-blur p-6 flex flex-col"
+      >
+        @if (activeSkill(); as skill) {
+          <ng-container *ngTemplateOutlet="skillDetail; context: { $implicit: skill }" />
+        } @else {
+          <p class="font-mono text-sm text-secondary/60 leading-relaxed">
+            Hover a skill to see where I've used it. Click one to keep it selected.
+          </p>
+        }
+
+        <ul class="mt-auto pt-8 space-y-3 font-mono text-xs text-secondary/60">
+          <li class="flex items-center gap-3">
+            <span
+              class="size-2.5 rounded-full bg-accent shadow-[0_0_12px_rgba(47,21,244,0.8)]"
+            ></span>
+            Center: core skills
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="size-2.5 rounded-full border border-secondary/40"></span>
+            Inner ring: proficient
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="size-2.5 rounded-full border border-secondary/15"></span>
+            Outer ring: familiar
+          </li>
+        </ul>
+      </aside>
+    </div>
+
+    <!-- below lg: grouped chips -->
+    <div class="lg:hidden flex flex-col gap-10">
+      @for (group of skillGroups; track group.name) {
+        <div>
+          <h3
+            class="font-mono text-xs tracking-[0.2em] uppercase"
+            [class]="group.name === 'Core' ? 'text-accent' : 'text-secondary/40'"
+          >
+            {{ group.name }}
+          </h3>
+
+          <div class="mt-4 flex flex-wrap gap-2">
+            @for (skill of group.skills; track skill.slug) {
+              <button
+                type="button"
+                [class]="skillClass(skill)"
+                [attr.aria-pressed]="pinnedSlug() === skill.slug"
+                (pointerenter)="hoverSkill($event, skill.slug)"
+                (pointerleave)="unhoverSkill($event)"
+                (click)="pinSkill($event, skill.slug)"
+              >
+                <img [class]="iconClass(skill)" [src]="iconUrl(skill.slug)" alt="" loading="lazy" />
+                {{ skill.name }}
+              </button>
+            }
+          </div>
+
+          @if (pinnedSkill(); as skill) {
+            @if (groupName(skill) === group.name) {
+              <div class="mt-4 rounded-2xl border border-secondary/10 bg-secondary/[0.03] p-5">
+                <ng-container *ngTemplateOutlet="skillDetail; context: { $implicit: skill }" />
+              </div>
+            }
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- shared by the desktop panel and the mobile card -->
+  <ng-template #skillDetail let-skill>
+    <div class="flex items-center gap-3">
+      <img class="size-8" [src]="iconUrl(skill.slug)" alt="" />
+      <div>
+        <p class="font-mono text-lg text-secondary">{{ skill.name }}</p>
+        <p class="font-mono text-xs text-secondary/40 uppercase tracking-widest">
+          {{ levelText(skill) }} · {{ skill.category }}
+        </p>
+      </div>
+    </div>
+
+    <p class="mt-6 font-mono text-xs tracking-[0.2em] text-secondary/40 uppercase">Used in</p>
+    <ul class="mt-3 space-y-2">
+      @for (project of projectsFor(skill.slug); track project.name) {
+        <li class="flex items-center justify-between gap-3 font-mono text-sm text-secondary/80">
+          <span>{{ project.name }}</span>
+          <span class="text-xs text-secondary/40 capitalize">{{ project.date }}</span>
+        </li>
+      } @empty {
+        <li class="font-mono text-sm text-secondary/40">No listed project yet.</li>
+      }
+    </ul>
+  </ng-template>
 </section>
 
 <div

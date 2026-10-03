@@ -1,13 +1,22 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   Component,
+  DestroyRef,
   ElementRef,
   HostListener,
+  NgZone,
   computed,
+  inject,
   signal,
   viewChild,
 } from '@angular/core';
-import { initFlowbite } from 'flowbite';
+import {
+  type LayoutNode,
+  type LayoutResult,
+  type SkillLevel,
+  layoutSkillGraph,
+} from './skill-layout';
 
 type WorkStatus = 'in-progress' | 'shipped' | 'prototype';
 
@@ -38,8 +47,41 @@ interface ProjectItem {
 
 type WorkItem = CareerItem | ProjectItem;
 
+interface Skill extends Tech {
+  /** core = center of the graph, proficient = inner ring, familiar = outer ring. */
+  level: SkillLevel;
+  /** Groups the skills around the graph (and on mobile). */
+  category: string;
+}
+
+interface GraphNode extends LayoutNode {
+  skill?: Skill;
+}
+
+type SkillState = 'idle' | 'dim' | 'related' | 'active';
+
+/** Pill styles per level. If you change sizes here, update PILL in skill-layout.ts too. */
+const LEVEL_CLASS: Record<SkillLevel, string> = {
+  core: 'px-4 py-2 text-base border-accent/60 bg-accent/15 text-secondary shadow-[0_0_30px_rgba(47,21,244,0.35)]',
+  proficient: 'px-3.5 py-1.5 text-sm border-secondary/20 bg-secondary/[0.04] text-secondary/90',
+  familiar: 'px-3 py-1 text-xs border-secondary/10 text-secondary/60',
+};
+
+const ICON_CLASS: Record<SkillLevel, string> = {
+  core: 'size-6',
+  proficient: 'size-5',
+  familiar: 'size-4',
+};
+
+const STATE_CLASS: Record<SkillState, string> = {
+  idle: '',
+  dim: 'opacity-25',
+  related: 'border-accent/50!',
+  active: 'border-accent! bg-accent/25! scale-110 z-10',
+};
+
 @Component({
-  imports: [],
+  imports: [NgTemplateOutlet],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
@@ -70,62 +112,375 @@ export class App implements AfterViewInit {
     prototype: 'Prototype',
   };
 
-  /** Sample data: replace with your own. Newest first; entries alternate right/left. */
   protected readonly workItems: WorkItem[] = [
     {
       type: 'project',
-      date: 'Sep 2026',
-      name: 'Portfolio Website',
-      description: 'This site: a scroll-pinned hero, device mockups and a parallax timeline.',
-      status: 'in-progress',
+      date: 'september 2020',
+      name: 'MindLab',
+      description:
+        'Thesis project: a web platform that enables students and teachers to take part in online courses, with real-time video calls and chat, Stripe payments, and more. It was my first hands-on experience with TypeScript and Angular.',
+      status: 'prototype',
       stack: [
         { name: 'Angular', slug: 'angular' },
+        { name: 'Express', slug: 'express' },
+        { name: 'MongoDB', slug: 'mongodb' },
+        { name: 'Socket.io', slug: 'socket.io' },
+        { name: 'TypeScript', slug: 'typescript' },
+      ],
+    },
+    {
+      type: 'career',
+      date: 'october 2020',
+      title: 'JavaScript Fullstack certification',
+      role: 'RBK Tunisia',
+      description:
+        'Learned the fundamental technical skills as well as the soft skills and the importance of teamwork in a professional environment.',
+    },
+    {
+      type: 'project',
+      date: 'january 2021',
+      name: 'RBK Talents',
+      description:
+        'Dashboard for managing and tracking students at RBK Tunisia. deepened my knowledge of TypeScript and NestJS.',
+      status: 'prototype',
+      stack: [
+        { name: 'React', slug: 'react' },
+        { name: 'Nestjs', slug: 'nestjs' },
+        { name: 'MongoDB', slug: 'mongodb' },
         { name: 'TypeScript', slug: 'typescript' },
         { name: 'Tailwind CSS', slug: 'tailwindcss' },
       ],
     },
     {
-      type: 'career',
-      date: 'June 10th',
-      title: 'Joined Insight Plus',
-      role: 'Fullstack Developer',
-      description: 'Building web and mobile products end to end.',
-    },
-    {
       type: 'project',
-      date: 'Mar 2026',
-      name: 'Realtime Dashboard',
-      description: 'Live analytics with websockets, role-based access and exportable reports.',
-      status: 'shipped',
-      url: 'https://example.com',
+      date: 'March 2021',
+      name: 'Adrissa Web/Mobile',
+      description:
+        'A web and mobile platform for visting and rating locations in Tunisia. It was my first hands-on experience with react native.',
+      status: 'prototype',
       stack: [
-        { name: 'Angular', slug: 'angular' },
-        { name: 'Node.js', slug: 'nodedotjs' },
-        { name: 'PostgreSQL', slug: 'postgresql' },
-        { name: 'Docker', slug: 'docker' },
+        { name: 'Vue', slug: 'vue.js' },
+        { name: 'Nestjs', slug: 'nestjs' },
+        { name: 'React', slug: 'react' },
+        { name: 'Expo', slug: 'expo' },
       ],
     },
     {
       type: 'project',
-      date: 'Nov 2025',
-      name: 'Mobile Companion App',
-      description: 'Cross-platform companion app sharing one API with the web client.',
+      date: 'January 2022',
+      name: 'Euromedi Auditor',
+      description:
+        'App for healthcare accreditation and auditing. working closely with doctors in belgium to offer healthcare services that meet the highest standards.',
+      status: 'shipped',
+      url: 'https://hbib24.github.io/Auditor',
+      stack: [
+        { name: 'Vue', slug: 'vue.js' },
+        { name: 'Angular', slug: 'angular' },
+        { name: 'PrimeNG', slug: 'primeng' },
+        { name: 'Tailwind CSS', slug: 'tailwindcss' },
+      ],
+    },
+    {
+      type: 'career',
+      date: 'June 2022',
+      title: 'Joined Insight Plus',
+      role: 'Fullstack Developer',
+      description: 'Developing web/mobile Fintech Solutions.',
+    },
+    {
+      type: 'project',
+      date: 'July 2023',
+      name: 'Connect Web/Mobile',
+      description:
+        'Public website and mobile app for displaying real-time currency rates and exchange offices locations.',
+      status: 'shipped',
+      stack: [
+        { name: 'Angular', slug: 'angular' },
+        { name: 'React', slug: 'react' },
+        { name: 'Expo', slug: 'expo' },
+      ],
+    },
+    {
+      type: 'project',
+      date: 'September 2023',
+      name: 'ATAA',
+      description:
+        'A mobile app that connects volunteers with associations to support community service, featuring a rewards system, real-time chat, and notifications. It was my first hands-on experience with Flutter.',
       status: 'prototype',
       stack: [
         { name: 'Flutter', slug: 'flutter' },
-        { name: 'TypeScript', slug: 'typescript' },
+        { name: 'NestJS', slug: 'nestjs' },
+        { name: 'Socket.io', slug: 'socket.io' },
+        { name: 'mySQL', slug: 'mysql' },
+      ],
+    },
+    {
+      type: 'project',
+      date: 'March 2023',
+      name: 'Exsys ERP',
+      description:
+        'Erp system destined for exchange offices as well as payment service providers for managing their daily financial operations, inventory, and human resources, with real-time analytics and reporting.',
+      status: 'shipped',
+      url: 'https://erp.exsysplatform.com',
+      stack: [
+        { name: 'React', slug: 'react' },
+        { name: 'Bootstrap', slug: 'bootstrap' },
+        { name: 'Symfony', slug: 'symfony' },
+        { name: 'mySQL', slug: 'mysql' },
+      ],
+    },
+    {
+      type: 'project',
+      date: 'March 2023',
+      name: 'Exsys Rates Display',
+      description: 'A web application for displaying real-time currency rates of exchange offices.',
+      status: 'shipped',
+      url: 'https://display.exsysplatform.com',
+      stack: [
+        { name: 'Vue', slug: 'vue.js' },
+        { name: 'Vuetify', slug: 'vuetify' },
+        { name: 'Symfony', slug: 'symfony' },
+        { name: 'mySQL', slug: 'mysql' },
+      ],
+    },
+    {
+      type: 'project',
+      date: 'March 2023',
+      name: 'Exsys Marketplace',
+      description:
+        'A marketplace for trading currencies, mainly between exchange offices and banks, including a comprehensive flow for bartering currencies and managing orders.',
+      status: 'shipped',
+      url: 'https://fx.exsysplatform.com',
+      stack: [
+        { name: 'React', slug: 'react' },
+        { name: 'Bootstrap', slug: 'bootstrap' },
+        { name: 'Symfony', slug: 'symfony' },
+        { name: 'mySQL', slug: 'mysql' },
+      ],
+    },
+    {
+      type: 'project',
+      date: 'march 2024',
+      name: 'Exsys Common Package',
+      description:
+        'A collection of common components and utilities for the Exsys platform to streamline and unify the development process. Includes data tables, charts, and a dynamic form generator.',
+      status: 'shipped',
+      url: 'https://www.npmjs.com/package/exsys-common',
+      stack: [
+        { name: 'Angular', slug: 'angular' },
+        { name: 'Ant Design', slug: 'antdesign' },
+      ],
+    },
+    {
+      type: 'project',
+      date: 'September 2025',
+      name: 'Trust',
+      description:
+        'Public platform for consulting currency rates and ordering currencies online. Includes map locations and order tracking.',
+      status: 'shipped',
+      stack: [
+        { name: 'Angular', slug: 'angular' },
+        { name: 'Tailwind CSS', slug: 'tailwindcss' },
+        { name: 'Express', slug: 'express' },
+      ],
+    },
+    {
+      type: 'project',
+      date: 'March 2026',
+      name: 'Vanilla',
+      description:
+        'A comprehensive financial super app that combines a secure digital wallet, seamless payment services, and robust security features to help users manage their money and complete transactions with confidence.',
+      status: 'prototype',
+      stack: [
+        { name: 'Angular', slug: 'angular' },
+        { name: 'Flutter', slug: 'flutter' },
+        { name: 'Tailwind CSS', slug: 'tailwindcss' },
+        { name: 'Symfony', slug: 'symfony' },
+        { name: 'mySQL', slug: 'mysql' },
       ],
     },
   ];
 
-  ngOnInit(): void {
-    initFlowbite();
+  /**
+   * Sample data: set your own levels and categories.
+   * Add a skill here and the graph, the mobile list and the project links all update.
+   * `slug` must match the slug used in the `stack` of your projects to link them.
+   */
+  protected readonly skills: Skill[] = [
+    { name: 'Angular', slug: 'angular', level: 'core', category: 'Frontend' },
+    { name: 'Tailwind CSS', slug: 'tailwindcss', level: 'core', category: 'Frontend' },
+    { name: 'NestJS', slug: 'nestjs', level: 'core', category: 'Backend' },
+    { name: 'MySQL', slug: 'mysql', level: 'core', category: 'Data' },
+    { name: 'React', slug: 'react', level: 'proficient', category: 'Frontend' },
+    { name: 'Vue', slug: 'vue.js', level: 'proficient', category: 'Frontend' },
+    { name: 'Express', slug: 'express', level: 'proficient', category: 'Backend' },
+    { name: 'Expo', slug: 'expo', level: 'familiar', category: 'Mobile' },
+    { name: 'Symfony', slug: 'symfony', level: 'familiar', category: 'Backend' },
+    { name: 'Socket.io', slug: 'socket.io', level: 'familiar', category: 'Backend' },
+    { name: 'MongoDB', slug: 'mongodb', level: 'familiar', category: 'Data' },
+    { name: 'Flutter', slug: 'flutter', level: 'familiar', category: 'Mobile' },
+    { name: 'Ionic', slug: 'ionic', level: 'familiar', category: 'Mobile' },
+  ];
+
+  private readonly skillBySlug = new Map<string, Skill>(
+    this.skills.map((skill): [string, Skill] => [skill.slug, skill]),
+  );
+
+  private readonly levelLabel: Record<SkillLevel, string> = {
+    core: 'Core',
+    proficient: 'Proficient',
+    familiar: 'Familiar',
+  };
+
+  /** Mobile / tablet: skills grouped as "Core" first, then by category. */
+  protected readonly skillGroups = this.buildSkillGroups();
+
+  private readonly zone = inject(NgZone);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly skillGraph = viewChild.required<ElementRef<HTMLDivElement>>('skillGraph');
+  private readonly layout = signal<LayoutResult>({ nodes: [], rings: [] });
+
+  protected readonly graphNodes = computed<GraphNode[]>(() =>
+    this.layout().nodes.map((node) => ({ ...node, skill: this.skillBySlug.get(node.id) })),
+  );
+  protected readonly graphRings = computed(() => this.layout().rings);
+
+  /** Hover (mouse only) previews a skill; click / tap pins it. */
+  private readonly hoveredSlug = signal<string | null>(null);
+  protected readonly pinnedSlug = signal<string | null>(null);
+  protected readonly activeSlug = computed(() => this.hoveredSlug() ?? this.pinnedSlug());
+
+  protected readonly activeSkill = computed(() => {
+    const slug = this.activeSlug();
+    return slug ? (this.skillBySlug.get(slug) ?? null) : null;
+  });
+  protected readonly pinnedSkill = computed(() => {
+    const slug = this.pinnedSlug();
+    return slug ? (this.skillBySlug.get(slug) ?? null) : null;
+  });
+
+  /** The active skill plus every skill used in the same projects. */
+  private readonly relatedSlugs = computed(() => {
+    const related = new Set<string>();
+    const slug = this.activeSlug();
+    if (!slug) return related;
+
+    related.add(slug);
+    for (const project of this.projectsFor(slug)) {
+      for (const tech of project.stack) related.add(tech.slug);
+    }
+    return related;
+  });
+
+  /** Lines from the active skill to the skills it was used with. */
+  protected readonly graphLines = computed(() => {
+    const slug = this.activeSlug();
+    if (!slug) return [];
+
+    const positions = new Map(this.layout().nodes.map((node) => [node.id, node]));
+    const from = positions.get(slug);
+    if (!from) return [];
+
+    return [...this.relatedSlugs()]
+      .filter((other) => other !== slug)
+      .flatMap((other) => {
+        const to = positions.get(other);
+        return to ? [{ id: other, x1: from.x, y1: from.y, x2: to.x, y2: to.y }] : [];
+      });
+  });
+
+  protected projectsFor(slug: string): ProjectItem[] {
+    return this.workItems.filter(
+      (item): item is ProjectItem =>
+        item.type === 'project' && item.stack.some((tech) => tech.slug === slug),
+    );
+  }
+
+  protected levelText(skill: Skill): string {
+    return this.levelLabel[skill.level];
+  }
+
+  protected groupName(skill: Skill): string {
+    return skill.level === 'core' ? 'Core' : skill.category;
+  }
+
+  protected iconUrl(slug: string): string {
+    return `https://cdn.simpleicons.org/${slug}/fafafa`;
+  }
+
+  protected skillClass(skill: Skill): string {
+    const base =
+      'inline-flex items-center gap-2 whitespace-nowrap rounded-full border font-mono cursor-pointer transition-all duration-300';
+    return `${base} ${LEVEL_CLASS[skill.level]} ${STATE_CLASS[this.skillState(skill.slug)]}`;
+  }
+
+  protected iconClass(skill: Skill): string {
+    return `${ICON_CLASS[skill.level]} opacity-90`;
+  }
+
+  protected hoverSkill(event: PointerEvent, slug: string): void {
+    if (event.pointerType === 'mouse') this.hoveredSlug.set(slug);
+  }
+
+  protected unhoverSkill(event: PointerEvent): void {
+    if (event.pointerType === 'mouse') this.hoveredSlug.set(null);
+  }
+
+  protected pinSkill(event: Event, slug: string): void {
+    event.stopPropagation();
+    this.pinnedSlug.update((current) => (current === slug ? null : slug));
+  }
+
+  protected clearPin(): void {
+    this.pinnedSlug.set(null);
+  }
+
+  private skillState(slug: string): SkillState {
+    const active = this.activeSlug();
+    if (!active) return 'idle';
+    if (slug === active) return 'active';
+    return this.relatedSlugs().has(slug) ? 'related' : 'dim';
+  }
+
+  private buildSkillGroups(): { name: string; skills: Skill[] }[] {
+    const rank: Record<SkillLevel, number> = { core: 0, proficient: 1, familiar: 2 };
+    const groups = new Map<string, Skill[]>();
+
+    for (const skill of [...this.skills].sort((a, b) => rank[a.level] - rank[b.level])) {
+      const name = this.groupName(skill);
+      groups.set(name, [...(groups.get(name) ?? []), skill]);
+    }
+    return [...groups].map(([name, skills]) => ({ name, skills }));
+  }
+
+  /** Lays the graph out for the size it actually has (it is display:none below `lg`). */
+  private layoutGraph(): void {
+    const el = this.skillGraph().nativeElement;
+    if (el.clientWidth < 300 || el.clientHeight < 240) return;
+
+    this.layout.set(
+      layoutSkillGraph(
+        this.skills.map((skill) => ({
+          id: skill.slug,
+          label: skill.name,
+          level: skill.level,
+          category: skill.category,
+        })),
+        el.clientWidth,
+        el.clientHeight,
+      ),
+    );
   }
 
   ngAfterViewInit(): void {
     // Set the correct panel immediately (e.g. on refresh mid-scroll)
     // instead of waiting for the first scroll/resize event.
     this.updateActivePanel();
+
+    // (Re)compute the skill graph whenever its container changes size.
+    const observer = new ResizeObserver(() => this.zone.run(() => this.layoutGraph()));
+    observer.observe(this.skillGraph().nativeElement);
+    this.destroyRef.onDestroy(() => observer.disconnect());
   }
 
   @HostListener('document:mousemove', ['$event'])
