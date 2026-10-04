@@ -60,6 +60,21 @@ interface GraphNode extends LayoutNode {
 
 type SkillState = 'idle' | 'dim' | 'related' | 'active';
 
+type ContactIcon = 'github' | 'linkedin' | 'mail';
+
+interface ContactLink {
+  label: string;
+  /** Text shown under the label. */
+  value: string;
+  /** https:// links open in a new tab, mailto: links open the mail app. */
+  href: string;
+  icon: ContactIcon;
+}
+
+type ContactStatus = 'idle' | 'sending' | 'sent' | 'error';
+
+const CONTACT_ENDPOINT = 'https://formspree.io/f/mgokpkyd';
+
 /** Pill styles per level. If you change sizes here, update PILL in skill-layout.ts too. */
 const LEVEL_CLASS: Record<SkillLevel, string> = {
   core: 'px-4 py-2 text-base border-accent/60 bg-accent/15 text-secondary shadow-[0_0_30px_rgba(47,21,244,0.35)]',
@@ -472,10 +487,109 @@ export class App implements AfterViewInit {
     );
   }
 
+  protected readonly year = new Date().getFullYear();
+
+  /** Sample values: replace with your own links. */
+  protected readonly contactLinks: ContactLink[] = [
+    {
+      label: 'LinkedIn',
+      value: 'linkedin.com/in/your-handle',
+      href: 'https://www.linkedin.com/in/your-handle',
+      icon: 'linkedin',
+    },
+    {
+      label: 'GitHub',
+      value: 'github.com/hbib24',
+      href: 'https://github.com/hbib24',
+      icon: 'github',
+    },
+    { label: 'Email', value: 'you@example.com', href: 'mailto:you@example.com', icon: 'mail' },
+  ];
+
+  protected readonly contactStatus = signal<ContactStatus>('idle');
+  protected readonly contactError = signal('');
+
+  /** Shown as the status pill in the Contact section. Set `open` to false when you're not available. */
+  protected readonly availability = {
+    open: true,
+    label: 'Open for work',
+    note: 'Freelance projects and full-time roles',
+  };
+
+  private readonly contactWrapper = viewChild.required<ElementRef<HTMLElement>>('contactWrapper');
+
+  /**
+   * 0 → 1 while the Skills section slides away and reveals Contact underneath
+   * (the mirror image of the hero → Work transition). Defaults to 1 (fully revealed), which is
+   * also the value below lg, where nothing is pinned.
+   */
+  private readonly contactReveal = signal(1);
+
+  /** Contact content rises into place as it is revealed (hero content does the opposite). */
+  protected readonly contactTransform = computed(() => {
+    const p = this.contactReveal();
+    return `translate3d(0, ${(1 - p) * 15}dvh, 0) scale(${0.94 + p * 0.06})`;
+  });
+
+  /** The halo slides down from above the section into its half-visible spot. */
+  protected readonly haloTransform = computed(() => {
+    const p = this.contactReveal();
+    return `translate3d(0, ${-(1 - p) * 30}dvh, 0) scale(${0.85 + p * 0.15})`;
+  });
+
+  protected clearContactStatus(): void {
+    if (this.contactStatus() !== 'sending') this.contactStatus.set('idle');
+  }
+
+  protected async sendMessage(event: Event, form: HTMLFormElement): Promise<void> {
+    event.preventDefault();
+    if (this.contactStatus() === 'sending') return;
+
+    this.contactStatus.set('sending');
+    try {
+      const response = await fetch(CONTACT_ENDPOINT, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form),
+      });
+
+      if (response.ok) {
+        form.reset();
+        this.contactStatus.set('sent');
+        return;
+      }
+
+      const data = (await response.json().catch(() => null)) as {
+        errors?: { message: string }[];
+      } | null;
+      this.contactError.set(
+        data?.errors?.map((error) => error.message).join(', ') ||
+          'Something went wrong. Please try again.',
+      );
+    } catch {
+      this.contactError.set("Couldn't reach the server. Check your connection and try again.");
+    }
+    this.contactStatus.set('error');
+  }
+
+  @HostListener('window:scroll')
+  @HostListener('window:resize')
+  updateContactReveal() {
+    // Contact is only pinned / revealed from lg up; below that it is a normal section.
+    if (!window.matchMedia('(min-width: 1024px)').matches) {
+      this.contactReveal.set(1);
+      return;
+    }
+
+    const top = this.contactWrapper().nativeElement.getBoundingClientRect().top;
+    this.contactReveal.set(Math.min(Math.max(-top / window.innerHeight, 0), 1));
+  }
+
   ngAfterViewInit(): void {
     // Set the correct panel immediately (e.g. on refresh mid-scroll)
     // instead of waiting for the first scroll/resize event.
     this.updateActivePanel();
+    this.updateContactReveal();
 
     // (Re)compute the skill graph whenever its container changes size.
     const observer = new ResizeObserver(() => this.zone.run(() => this.layoutGraph()));
