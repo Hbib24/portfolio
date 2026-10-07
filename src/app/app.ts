@@ -493,8 +493,8 @@ export class App implements AfterViewInit {
   protected readonly contactLinks: ContactLink[] = [
     {
       label: 'LinkedIn',
-      value: 'linkedin.com/in/your-handle',
-      href: 'https://www.linkedin.com/in/your-handle',
+      value: 'linkedin.com/in/hbib-bekir',
+      href: 'https://www.linkedin.com/in/hbib-bekir',
       icon: 'linkedin',
     },
     {
@@ -503,7 +503,12 @@ export class App implements AfterViewInit {
       href: 'https://github.com/hbib24',
       icon: 'github',
     },
-    { label: 'Email', value: 'you@example.com', href: 'mailto:you@example.com', icon: 'mail' },
+    {
+      label: 'Email',
+      value: 'habib.bekir@gmail.com',
+      href: 'mailto:habib.bekir@gmail.com',
+      icon: 'mail',
+    },
   ];
 
   protected readonly contactStatus = signal<ContactStatus>('idle');
