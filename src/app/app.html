@@ -98,6 +98,7 @@
         </div>
 
         <div
+          aria-hidden="true"
           class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[60%] tall:translate-y-1/2 md:translate-y-1/2 w-[92vw] max-w-6xl rounded-2xl border border-secondary/10 bg-primary overflow-hidden shadow-[0_0_120px_-20px_rgba(47,21,244,0.35)]"
         >
           <!-- title bar -->
@@ -230,6 +231,7 @@
         </div>
 
         <div
+          aria-hidden="true"
           class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[60%] md:translate-y-1/2 h-[min(560px,72dvh)] sm:h-[min(700px,68dvh)] aspect-[340/700] rounded-[52px] bg-primary border border-secondary/10 p-3 shadow-[0_0_120px_-20px_rgba(47,21,244,0.35)]"
         >
           <!-- side buttons -->
@@ -457,6 +459,8 @@
                         >
                           <img
                             class="size-5 opacity-70"
+                            width="20"
+                            height="20"
                             loading="lazy"
                             [src]="'https://cdn.simpleicons.org/' + tech.slug + '/fafafa'"
                             [alt]="tech.name"
@@ -567,7 +571,7 @@
               (pointerleave)="unhoverSkill($event)"
               (click)="pinSkill($event, skill.slug)"
             >
-              <img [class]="iconClass(skill)" [src]="iconUrl(skill.slug)" alt="" loading="lazy" />
+              <img [class]="iconClass(skill)" [src]="iconUrl(skill.slug)" alt="" width="20" height="20" loading="lazy" />
               {{ skill.name }}
             </button>
           } @else {
@@ -632,7 +636,7 @@
                 (pointerleave)="unhoverSkill($event)"
                 (click)="pinSkill($event, skill.slug)"
               >
-                <img [class]="iconClass(skill)" [src]="iconUrl(skill.slug)" alt="" loading="lazy" />
+                <img [class]="iconClass(skill)" [src]="iconUrl(skill.slug)" alt="" width="20" height="20" loading="lazy" />
                 {{ skill.name }}
               </button>
             }
@@ -653,7 +657,7 @@
   <!-- shared by the desktop panel and the mobile card -->
   <ng-template #skillDetail let-skill>
     <div class="flex items-center gap-3">
-      <img class="size-8" [src]="iconUrl(skill.slug)" alt="" />
+      <img class="size-8" [src]="iconUrl(skill.slug)" alt="" width="32" height="32" />
       <div>
         <p class="font-mono text-lg text-secondary">{{ skill.name }}</p>
         <p class="font-mono text-xs text-secondary/40 uppercase tracking-widest">
