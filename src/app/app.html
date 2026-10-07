@@ -1,13 +1,13 @@
 <header
   class="bg-primary/20 backdrop-blur py-4 fixed top-0 z-50 w-full animate__fadeInDown animate__animated"
 >
-  <div class="container mx-auto flex justify-between items-center">
-    <a href="#hero" class="text-3xl text-secondary select-none">
+  <div class="site-container flex justify-between items-center">
+    <a href="#hero" class="text-2xl sm:text-3xl text-secondary whitespace-nowrap select-none">
       HABIB
       <span class="font-light!">BEKIR</span>
     </a>
     <nav>
-      <ul class="flex gap-8 text-secondary/80 *:hover:text-secondary font-mono text-lg">
+      <ul class="flex gap-5 sm:gap-8 text-secondary/80 *:hover:text-secondary font-mono text-sm sm:text-lg">
         <li><a href="#work">Work</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -27,11 +27,11 @@
   <div class="sticky top-0 h-dvh w-full overflow-hidden">
     <!-- accent bloom sits behind the panels -->
     <div
-      class="bg-accent/40 absolute right-[30dvw] bottom-[-20dvw] blur-[250px] animate-[my-pulse_2s_ease-in-out] from-accent rounded-full w-[70dvw] lg:w-[40dvw] h-[70dvw] lg:h-[40dvw]"
+      class="bg-accent/40 absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 blur-[clamp(90px,20vw,250px)] animate-[my-pulse_2s_ease-in-out] from-accent rounded-full size-[max(70dvw,50dvh)] lg:size-[max(40dvw,50dvh)]"
     ></div>
 
     <div
-      class="relative h-full w-full container mx-auto will-change-transform"
+      class="relative h-full site-container will-change-transform"
       [style.transform]="heroTransform()"
       [style.opacity]="heroOpacity()"
     >
@@ -87,7 +87,7 @@
         [class.translate-y-6]="activeIndex() !== 1"
       >
         <div
-          class="absolute inset-0 flex flex-col items-center justify-center text-center gap-6 px-4 pointer-events-none"
+          class="absolute inset-x-0 top-0 bottom-0 md:top-16 md:bottom-[36dvh] flex flex-col items-center justify-center text-center gap-6 px-4 pointer-events-none"
         >
           <span class="font-mono tracking-[0.3em] text-accent uppercase">01 — Web</span>
           <h2
@@ -95,13 +95,10 @@
           >
             Building for the browser
           </h2>
-          <p class="hidden md:block font-mono text-secondary/60 text-sm lg:text-base max-w-xl">
-            Full web applications — dashboards, platforms and internal tools, from API to interface.
-          </p>
         </div>
 
         <div
-          class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[60%] md:translate-y-1/2 w-[92vw] max-w-6xl rounded-2xl border border-secondary/10 bg-primary overflow-hidden shadow-[0_0_120px_-20px_rgba(47,21,244,0.35)]"
+          class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[60%] tall:translate-y-1/2 md:translate-y-1/2 w-[92vw] max-w-6xl rounded-2xl border border-secondary/10 bg-primary overflow-hidden shadow-[0_0_120px_-20px_rgba(47,21,244,0.35)]"
         >
           <!-- title bar -->
           <div
@@ -119,7 +116,7 @@
           </div>
 
           <!-- app body (key content is in the top half, which is the visible part) -->
-          <div class="flex h-[380px] md:h-[480px] lg:h-[580px]">
+          <div class="flex h-[min(460px,52dvh)] md:h-[min(480px,58dvh)] lg:h-[min(580px,62dvh)]">
             <!-- sidebar -->
             <div
               class="hidden sm:block w-36 lg:w-56 shrink-0 border-r border-secondary/10 p-4 lg:p-5 space-y-6"
@@ -222,7 +219,7 @@
         [class.translate-y-6]="activeIndex() !== 2"
       >
         <div
-          class="absolute inset-0 flex flex-col items-center justify-center text-center gap-6 px-4 pointer-events-none"
+          class="absolute inset-x-0 top-0 bottom-0 md:top-16 md:bottom-[36dvh] flex flex-col items-center justify-center text-center gap-6 px-4 pointer-events-none"
         >
           <span class="font-mono tracking-[0.3em] text-accent uppercase">02 — Mobile</span>
           <h2
@@ -230,13 +227,10 @@
           >
             Native-feeling mobile apps
           </h2>
-          <p class="hidden md:block font-mono text-secondary/60 text-sm lg:text-base max-w-xl">
-            Fast, fluid apps that feel at home on every device, sharing one solid backend.
-          </p>
         </div>
 
         <div
-          class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[60%] md:translate-y-1/2 w-[270px] sm:w-[340px] h-[560px] sm:h-[700px] rounded-[52px] bg-primary border border-secondary/10 p-3 shadow-[0_0_120px_-20px_rgba(47,21,244,0.35)]"
+          class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[60%] md:translate-y-1/2 h-[min(560px,72dvh)] sm:h-[min(700px,68dvh)] aspect-[340/700] rounded-[52px] bg-primary border border-secondary/10 p-3 shadow-[0_0_120px_-20px_rgba(47,21,244,0.35)]"
         >
           <!-- side buttons -->
           <div class="absolute -left-[3px] top-32 w-[3px] h-8 rounded-l-sm bg-secondary/15"></div>
@@ -346,7 +340,7 @@
   id="work"
   class="relative z-10 -mt-[100dvh] bg-primary rounded-t-[2.5rem] md:rounded-t-[4rem] border-t border-secondary/10 shadow-[0_-30px_80px_-20px_rgba(47,21,244,0.3)]"
 >
-  <div class="container mx-auto px-6 py-28 md:py-40">
+  <div class="site-container py-28 md:py-40">
     <header class="text-center max-w-2xl mx-auto mb-20 md:mb-32">
       <span class="font-mono tracking-[0.3em] text-accent uppercase">Work</span>
       <h2 class="font-mono text-4xl lg:text-6xl text-secondary tracking-wide mt-6">
@@ -517,7 +511,7 @@
   id="skills"
   class="relative bg-primary border-t border-secondary/10 lg:z-10 lg:rounded-b-[4rem] lg:border-b lg:shadow-[0_30px_80px_-20px_rgba(47,21,244,0.3)]"
 >
-  <div class="container mx-auto px-6 py-24 lg:py-28 lg:min-h-dvh lg:flex lg:flex-col lg:justify-center">
+  <div class="site-container py-24 lg:py-28 lg:min-h-dvh lg:flex lg:flex-col lg:justify-center">
     <header class="text-center max-w-2xl mx-auto mb-12 lg:mb-14">
       <span class="font-mono tracking-[0.3em] text-accent uppercase">Skills</span>
       <h2 class="font-mono text-3xl lg:text-5xl text-secondary tracking-wide mt-6">
@@ -700,28 +694,28 @@
   <div class="relative bg-primary overflow-hidden lg:sticky lg:top-0 lg:h-dvh">
     <!-- accent halo, callback to the hero: now half visible at the top -->
     <div
-      class="pointer-events-none absolute left-[30dvw] top-[-35dvw] lg:top-[-20dvw] rounded-full bg-accent/40 blur-[250px] w-[70dvw] lg:w-[40dvw] h-[70dvw] lg:h-[40dvw] will-change-transform"
+      class="pointer-events-none absolute left-1/2 -translate-x-1/2 top-0 -translate-y-1/2 rounded-full bg-accent/40 blur-[clamp(90px,20vw,250px)] size-[max(70dvw,50dvh)] lg:size-[max(40dvw,50dvh)] will-change-transform"
       [style.transform]="haloTransform()"
     ></div>
 
     <div
-      class="relative container mx-auto px-6 py-24 lg:py-0 lg:h-full flex items-center will-change-transform"
+      class="relative site-container min-h-dvh lg:min-h-0 lg:h-full pt-24 pb-16 lg:pt-20 lg:pb-12 flex items-center will-change-transform"
       [style.transform]="contactTransform()"
     >
-      <div class="w-full grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+      <div class="w-full grid lg:grid-cols-2 gap-12 lg:gap-24 lg:short:gap-16 items-center">
         <!-- intro + links -->
         <div>
           <span class="font-mono tracking-[0.3em] text-accent uppercase">Contact</span>
-          <h2 class="font-mono text-4xl lg:text-6xl text-secondary tracking-wide mt-6">
+          <h2 class="font-mono text-4xl lg:text-6xl lg:short:text-5xl lg:xshort:text-4xl text-secondary tracking-wide mt-6 short:mt-4">
             Let's build something together
           </h2>
-          <p class="font-mono text-secondary/60 text-sm lg:text-base mt-6 max-w-md">
+          <p class="font-mono text-secondary/60 text-sm lg:text-base mt-6 short:mt-4 lg:xshort:hidden max-w-md">
             Have a project, a role, or a question? Send a message, or reach out directly.
           </p>
 
           <!-- availability status (edit `availability` in app.ts) -->
           <span
-            class="mt-8 inline-flex items-center gap-3 rounded-full border border-secondary/15 bg-secondary/[0.03] backdrop-blur px-4 py-2 font-mono text-xs tracking-[0.2em] text-secondary/80 uppercase"
+            class="mt-8 short:mt-5 inline-flex items-center gap-3 rounded-full border border-secondary/15 bg-secondary/[0.03] backdrop-blur px-4 py-2 font-mono text-xs tracking-[0.2em] text-secondary/80 uppercase"
           >
             <span class="relative flex size-2">
               @if (availability.open) {
@@ -740,17 +734,17 @@
             >
           </span>
 
-          <ul class="mt-6 flex flex-col gap-3 max-w-md">
+          <ul class="mt-6 short:mt-4 flex flex-col gap-3 short:gap-2 max-w-md">
             @for (link of contactLinks; track link.label) {
               <li>
                 <a
-                  class="group flex items-center gap-4 rounded-2xl border border-secondary/10 bg-secondary/[0.03] backdrop-blur px-4 py-3 transition-colors duration-300 hover:border-secondary/25 hover:bg-secondary/[0.05]"
+                  class="group flex items-center gap-4 rounded-2xl border border-secondary/10 bg-secondary/[0.03] backdrop-blur px-4 py-3 short:py-2 transition-colors duration-300 hover:border-secondary/25 hover:bg-secondary/[0.05]"
                   [href]="link.href"
                   [attr.target]="link.href.startsWith('http') ? '_blank' : null"
                   [attr.rel]="link.href.startsWith('http') ? 'noopener noreferrer' : null"
                 >
                   <span
-                    class="size-10 shrink-0 rounded-lg border border-secondary/10 bg-primary/60 flex items-center justify-center text-secondary/70 transition-colors duration-300 group-hover:text-secondary"
+                    class="size-10 short:size-9 shrink-0 rounded-lg border border-secondary/10 bg-primary/60 flex items-center justify-center text-secondary/70 transition-colors duration-300 group-hover:text-secondary"
                   >
                     @switch (link.icon) {
                       @case ('github') {
@@ -834,7 +828,7 @@
         <!-- message form (posts to Formspree) -->
         <form
           #contactForm
-          class="rounded-3xl border border-secondary/10 bg-secondary/[0.03] backdrop-blur p-6 lg:p-8 flex flex-col gap-5"
+          class="rounded-3xl border border-secondary/10 bg-secondary/[0.03] backdrop-blur p-6 lg:p-8 lg:short:p-6 flex flex-col gap-5 short:gap-4"
           (submit)="sendMessage($event, contactForm)"
           (input)="clearContactStatus()"
         >
@@ -866,7 +860,7 @@
               name="message"
               required
               minlength="10"
-              rows="5"
+              rows="4"
               placeholder="Tell me about your project…"
               class="w-full resize-none rounded-xl border border-secondary/15 bg-primary/60 px-4 py-3 font-mono text-sm text-secondary placeholder:text-secondary/30 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/25"
             ></textarea>
