@@ -1,0 +1,927 @@
+<header
+  class="bg-primary/20 backdrop-blur py-4 fixed top-0 z-50 w-full animate__fadeInDown animate__animated"
+>
+  <div class="site-container flex justify-between items-center">
+    <a href="#hero" class="text-2xl sm:text-3xl text-secondary whitespace-nowrap select-none">
+      HABIB
+      <span class="font-light!">BEKIR</span>
+    </a>
+    <nav>
+      <ul class="flex gap-5 sm:gap-8 text-secondary/80 *:hover:text-secondary font-mono text-sm sm:text-lg">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!--
+  Hero pin: 400dvh = 1 sticky viewport + 200dvh holding the 3 panels (intro H1 /
+  desktop mockup / mobile mockup) + 1 viewport during which the Work section
+  slides over the still-pinned hero (see #work). The sticky stage has
+  overflow-hidden, so mockups anchored at bottom-0 and shifted down by 50% of
+  their own height show only their top half.
+-->
+<section id="hero" #pinWrapper class="bg-primary relative h-[400dvh]">
+  <div class="sticky top-0 h-dvh w-full overflow-hidden">
+    <!-- accent bloom sits behind the panels -->
+    <div
+      class="bg-accent/40 absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 blur-[clamp(90px,20vw,250px)] animate-[my-pulse_2s_ease-in-out] from-accent rounded-full size-[max(70dvw,50dvh)] lg:size-[max(40dvw,50dvh)]"
+    ></div>
+
+    <div
+      class="relative h-full site-container will-change-transform"
+      [style.transform]="heroTransform()"
+      [style.opacity]="heroOpacity()"
+    >
+      <!-- panel 0 — H1 introduction -->
+      <div
+        class="absolute inset-0 flex flex-col items-center justify-center text-center gap-6 px-4 transition-all duration-700 ease-out"
+        [class.opacity-100]="activeIndex() === 0"
+        [class.opacity-0]="activeIndex() !== 0"
+        [class.translate-y-0]="activeIndex() === 0"
+        [class.translate-y-6]="activeIndex() !== 0"
+      >
+        <span class="font-mono tracking-[0.3em] text-accent uppercase">Fullstack developer</span>
+        <h1
+          class="font-mono text-5xl lg:text-6xl text-secondary tracking-wide max-w-4xl lg:max-w-[60dvw] mx-auto"
+        >
+          Engineering refined web &amp; mobile experiences
+        </h1>
+        <p class="font-mono text-secondary/60 text-sm lg:text-base max-w-xl">
+          Passion is what drives me to craft seamless, high-performance applications that leave a
+          lasting impact.
+        </p>
+
+        <!-- scroll hint -->
+        <div
+          class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-secondary/40 pointer-events-none"
+        >
+          <span class="font-mono text-xs tracking-[0.3em] uppercase">Scroll down</span>
+          <svg
+            class="size-5 animate-[scrollhint_1.5s_ease-in-out_infinite]"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M7 7l5 5l5 -5" />
+            <path d="M7 13l5 5l5 -5" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- panel 1 — desktop mockup, bottom half peeking -->
+      <div
+        class="absolute inset-0 transition-all duration-700 ease-out"
+        [class.opacity-100]="activeIndex() === 1"
+        [class.opacity-0]="activeIndex() !== 1"
+        [class.translate-y-0]="activeIndex() === 1"
+        [class.translate-y-6]="activeIndex() !== 1"
+      >
+        <div
+          class="absolute inset-x-0 top-0 bottom-0 md:top-16 md:bottom-[36dvh] flex flex-col items-center justify-center text-center gap-6 px-4 pointer-events-none"
+        >
+          <span class="font-mono tracking-[0.3em] text-accent uppercase">01 — Web</span>
+          <h2
+            class="font-mono text-5xl lg:text-6xl text-secondary tracking-wide max-w-4xl lg:max-w-[60dvw] mx-auto"
+          >
+            Building for the browser
+          </h2>
+        </div>
+
+        <div
+          aria-hidden="true"
+          class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[60%] tall:translate-y-1/2 md:translate-y-1/2 w-[92vw] max-w-6xl rounded-2xl border border-secondary/10 bg-primary overflow-hidden shadow-[0_0_120px_-20px_rgba(47,21,244,0.35)]"
+        >
+          <!-- title bar -->
+          <div
+            class="flex items-center gap-2 px-5 py-3.5 border-b border-secondary/10 bg-secondary/[0.03]"
+          >
+            <span class="w-3 h-3 rounded-full bg-secondary/20"></span>
+            <span class="w-3 h-3 rounded-full bg-secondary/20"></span>
+            <span class="w-3 h-3 rounded-full bg-secondary/20"></span>
+            <div
+              class="mx-auto w-1/2 max-w-md h-7 rounded-md bg-secondary/[0.04] border border-secondary/10 flex items-center justify-center"
+            >
+              <span class="font-mono text-[11px] text-secondary/40">habibbekir.dev/dashboard</span>
+            </div>
+            <span class="w-12"></span>
+          </div>
+
+          <!-- app body (key content is in the top half, which is the visible part) -->
+          <div class="flex h-[min(460px,52dvh)] md:h-[min(480px,58dvh)] lg:h-[min(580px,62dvh)]">
+            <!-- sidebar -->
+            <div
+              class="hidden sm:block w-36 lg:w-56 shrink-0 border-r border-secondary/10 p-4 lg:p-5 space-y-6"
+            >
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-md bg-accent"></div>
+                <div class="h-2.5 w-16 rounded bg-secondary/30"></div>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-center gap-2 rounded-lg bg-secondary/[0.06] px-3 py-2">
+                  <div class="w-3 h-3 rounded bg-accent"></div>
+                  <div class="h-2 w-16 rounded bg-secondary/40"></div>
+                </div>
+                <div class="flex items-center gap-2 px-3 py-2">
+                  <div class="w-3 h-3 rounded bg-secondary/20"></div>
+                  <div class="h-2 w-12 rounded bg-secondary/20"></div>
+                </div>
+                <div class="flex items-center gap-2 px-3 py-2">
+                  <div class="w-3 h-3 rounded bg-secondary/20"></div>
+                  <div class="h-2 w-20 rounded bg-secondary/20"></div>
+                </div>
+                <div class="flex items-center gap-2 px-3 py-2">
+                  <div class="w-3 h-3 rounded bg-secondary/20"></div>
+                  <div class="h-2 w-14 rounded bg-secondary/20"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- main -->
+            <div class="flex-1 p-5 lg:p-7 flex flex-col gap-5">
+              <div class="flex items-center justify-between">
+                <div class="space-y-2">
+                  <div class="h-3 w-32 rounded bg-secondary/40"></div>
+                  <div class="h-2 w-48 rounded bg-secondary/15"></div>
+                </div>
+                <div
+                  class="h-8 w-24 rounded-lg bg-accent shadow-[0_0_24px_rgba(47,21,244,0.4)]"
+                ></div>
+              </div>
+
+              <div class="grid grid-cols-3 gap-4">
+                <div
+                  class="rounded-xl border border-secondary/10 bg-secondary/[0.03] p-4 space-y-3"
+                >
+                  <div class="h-2 w-16 rounded bg-secondary/20"></div>
+                  <div class="font-mono text-base sm:text-2xl lg:text-3xl text-secondary">
+                    12.4k
+                  </div>
+                  <div class="h-1.5 w-full rounded bg-secondary/10">
+                    <div class="h-full w-2/3 rounded bg-accent"></div>
+                  </div>
+                </div>
+                <div
+                  class="rounded-xl border border-secondary/10 bg-secondary/[0.03] p-4 space-y-3"
+                >
+                  <div class="h-2 w-12 rounded bg-secondary/20"></div>
+                  <div class="font-mono text-base sm:text-2xl lg:text-3xl text-secondary">
+                    98.2%
+                  </div>
+                  <div class="h-1.5 w-full rounded bg-secondary/10">
+                    <div class="h-full w-11/12 rounded bg-accent"></div>
+                  </div>
+                </div>
+                <div
+                  class="rounded-xl border border-secondary/10 bg-secondary/[0.03] p-4 space-y-3"
+                >
+                  <div class="h-2 w-14 rounded bg-secondary/20"></div>
+                  <div class="font-mono text-base sm:text-2xl lg:text-3xl text-secondary">
+                    240ms
+                  </div>
+                  <div class="h-1.5 w-full rounded bg-secondary/10">
+                    <div class="h-full w-1/3 rounded bg-accent"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="flex-1 rounded-xl border border-secondary/10 bg-secondary/[0.03] p-5 flex items-end gap-3"
+              >
+                <div class="flex-1 bg-accent/30 rounded-t h-[30%]"></div>
+                <div class="flex-1 bg-accent/50 rounded-t h-[50%]"></div>
+                <div class="flex-1 bg-accent/40 rounded-t h-[42%]"></div>
+                <div class="flex-1 bg-accent/70 rounded-t h-[68%]"></div>
+                <div class="flex-1 bg-accent rounded-t h-[90%]"></div>
+                <div class="flex-1 bg-accent/60 rounded-t h-[60%]"></div>
+                <div class="flex-1 bg-accent/40 rounded-t h-[45%]"></div>
+                <div class="flex-1 bg-accent/80 rounded-t h-[75%]"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- panel 2 — mobile mockup, bottom half peeking -->
+      <div
+        class="absolute inset-0 transition-all duration-700 ease-out"
+        [class.opacity-100]="activeIndex() === 2"
+        [class.opacity-0]="activeIndex() !== 2"
+        [class.translate-y-0]="activeIndex() === 2"
+        [class.translate-y-6]="activeIndex() !== 2"
+      >
+        <div
+          class="absolute inset-x-0 top-0 bottom-0 md:top-16 md:bottom-[36dvh] flex flex-col items-center justify-center text-center gap-6 px-4 pointer-events-none"
+        >
+          <span class="font-mono tracking-[0.3em] text-accent uppercase">02 — Mobile</span>
+          <h2
+            class="font-mono text-5xl lg:text-6xl text-secondary tracking-wide max-w-4xl lg:max-w-[60dvw] mx-auto"
+          >
+            Native-feeling mobile apps
+          </h2>
+        </div>
+
+        <div
+          aria-hidden="true"
+          class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[60%] md:translate-y-1/2 h-[min(560px,72dvh)] sm:h-[min(700px,68dvh)] aspect-[340/700] rounded-[52px] bg-primary border border-secondary/10 p-3 shadow-[0_0_120px_-20px_rgba(47,21,244,0.35)]"
+        >
+          <!-- side buttons -->
+          <div class="absolute -left-[3px] top-32 w-[3px] h-8 rounded-l-sm bg-secondary/15"></div>
+          <div class="absolute -left-[3px] top-44 w-[3px] h-14 rounded-l-sm bg-secondary/15"></div>
+          <div class="absolute -left-[3px] top-60 w-[3px] h-14 rounded-l-sm bg-secondary/15"></div>
+          <div class="absolute -right-[3px] top-48 w-[3px] h-20 rounded-r-sm bg-secondary/15"></div>
+
+          <div
+            class="relative w-full h-full rounded-[42px] bg-primary overflow-hidden border border-secondary/10"
+          >
+            <!-- dynamic island -->
+            <div
+              class="absolute top-3 left-1/2 -translate-x-1/2 w-24 h-7 rounded-full bg-black/80 z-10"
+            ></div>
+
+            <!-- status bar -->
+            <div class="absolute top-0 inset-x-0 h-12 flex items-end justify-between px-8 pb-1.5">
+              <span class="font-mono text-[11px] text-secondary">9:41</span>
+              <div class="flex items-center gap-1.5">
+                <div class="flex items-end gap-[2px]">
+                  <div class="w-[3px] h-1 rounded-[1px] bg-secondary"></div>
+                  <div class="w-[3px] h-1.5 rounded-[1px] bg-secondary"></div>
+                  <div class="w-[3px] h-2 rounded-[1px] bg-secondary"></div>
+                  <div class="w-[3px] h-2.5 rounded-[1px] bg-secondary"></div>
+                </div>
+                <div class="w-6 h-2.5 rounded-[3px] border border-secondary/50 p-[1.5px]">
+                  <div class="h-full w-full rounded-[1px] bg-secondary"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- app content, loaded toward the top so it stays in the visible half -->
+            <div class="h-full flex flex-col gap-6 pt-16 px-5 sm:px-6">
+              <div class="flex items-center justify-between">
+                <span class="font-mono text-[10px] tracking-[0.14em] text-secondary/40 uppercase"
+                  >Portfolio</span
+                >
+                <div
+                  class="w-7 h-7 rounded-full border border-secondary/15 flex items-center justify-center"
+                >
+                  <div class="w-3 h-3 rounded-full bg-accent"></div>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-3">
+                <span class="font-mono text-[10px] tracking-[0.14em] text-accent uppercase"
+                  >Mobile-first</span
+                >
+                <p class="font-mono text-2xl sm:text-3xl leading-[1.1] text-secondary">
+                  Built for<br /><span class="text-accent">every screen.</span>
+                </p>
+                <p class="font-mono text-xs leading-relaxed text-secondary/60 max-w-[220px]">
+                  Clean, fast products across iOS and Android.
+                </p>
+              </div>
+
+              <div class="flex gap-3">
+                <div
+                  class="flex-1 rounded-xl bg-accent py-3 text-center font-mono text-xs text-secondary shadow-[0_0_24px_rgba(47,21,244,0.35)]"
+                >
+                  View work
+                </div>
+                <div class="w-11 rounded-xl border border-secondary/15"></div>
+              </div>
+
+              <div class="space-y-3">
+                <div
+                  class="flex items-center gap-3 rounded-xl border border-secondary/10 bg-secondary/[0.03] p-3"
+                >
+                  <div class="w-10 h-10 rounded-lg bg-accent/40"></div>
+                  <div class="space-y-2">
+                    <div class="h-2 w-24 rounded bg-secondary/40"></div>
+                    <div class="h-2 w-16 rounded bg-secondary/15"></div>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center gap-3 rounded-xl border border-secondary/10 bg-secondary/[0.03] p-3"
+                >
+                  <div class="w-10 h-10 rounded-lg bg-secondary/10"></div>
+                  <div class="space-y-2">
+                    <div class="h-2 w-20 rounded bg-secondary/40"></div>
+                    <div class="h-2 w-28 rounded bg-secondary/15"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- home indicator -->
+            <div
+              class="absolute bottom-2 left-1/2 -translate-x-1/2 w-28 h-1 rounded-full bg-secondary/30"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--
+  Work: -mt-[100dvh] pulls the section up over the hero's last viewport of scroll
+  room, z-10 paints it above the pinned hero, so it slides over it while the hero
+  content parallaxes away (see heroTransform in app.ts).
+  Timeline: bar on the left on mobile, in the middle from md up; entries alternate
+  right / left starting on the right.
+-->
+<section
+  id="work"
+  class="relative z-10 -mt-[100dvh] bg-primary rounded-t-[2.5rem] md:rounded-t-[4rem] border-t border-secondary/10 shadow-[0_-30px_80px_-20px_rgba(47,21,244,0.3)]"
+>
+  <div class="site-container py-28 md:py-40">
+    <header class="text-center max-w-2xl mx-auto mb-20 md:mb-32">
+      <span class="font-mono tracking-[0.3em] text-accent uppercase">Work</span>
+      <h2 class="font-mono text-4xl lg:text-6xl text-secondary tracking-wide mt-6">
+        Selected work &amp; career
+      </h2>
+      <p class="font-mono text-secondary/60 text-sm lg:text-base mt-6">
+        What I've shipped, what I'm building, and where I've been doing it.
+      </p>
+    </header>
+
+    <div class="relative">
+      <!-- timeline bar -->
+      <div
+        class="absolute left-4 md:left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-linear-to-b from-transparent via-secondary/30 to-transparent"
+      ></div>
+
+      <ol class="space-y-14 md:space-y-24">
+        @for (item of workItems; track $index; let odd = $odd) {
+          <li class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-x-24">
+            <!-- node on the bar: filled + glowing for career, hollow for projects -->
+            <span
+              class="absolute left-4 md:left-1/2 top-[26px] -translate-x-1/2 size-3 rounded-full border"
+              [class]="
+                item.type === 'career'
+                  ? 'border-accent bg-accent shadow-[0_0_20px_rgba(47,21,244,0.8)]'
+                  : 'border-secondary/40 bg-primary'
+              "
+            ></span>
+
+            <!-- date on the opposite side of the bar (md and up) -->
+            <time
+              class="hidden md:flex md:row-start-1 items-start pt-6 font-mono text-sm text-secondary/40 uppercase tracking-widest"
+              [class]="odd ? 'md:col-start-2' : 'md:col-start-1 md:justify-end'"
+            >
+              {{ item.date }}
+            </time>
+
+            <!-- content -->
+            <div
+              class="md:row-start-1"
+              [class]="odd ? 'md:col-start-1 md:text-right' : 'md:col-start-2'"
+            >
+              @if (item.type === 'career') {
+                <!-- career: light, unboxed -->
+                <div class="py-6 flex flex-col gap-3" [class]="odd ? 'md:items-end' : ''">
+                  <div class="flex items-center gap-3" [class]="odd ? 'md:justify-end' : ''">
+                    <span class="font-mono text-xs tracking-[0.2em] text-accent uppercase"
+                      >Career</span
+                    >
+                    <span
+                      class="md:hidden font-mono text-xs text-secondary/40 uppercase tracking-widest"
+                      >{{ item.date }}</span
+                    >
+                  </div>
+                  <h3 class="font-mono text-xl lg:text-2xl text-secondary">{{ item.title }}</h3>
+                  <p class="font-mono text-secondary/80">{{ item.role }}</p>
+                  @if (item.description) {
+                    <p class="font-mono text-sm text-secondary/60 leading-relaxed max-w-md">
+                      {{ item.description }}
+                    </p>
+                  }
+                </div>
+              } @else {
+                <!-- project: boxed card -->
+                <article
+                  class="rounded-2xl border border-secondary/10 bg-secondary/[0.03] backdrop-blur p-6 flex flex-col gap-4 transition-colors duration-300 hover:border-secondary/25 hover:bg-secondary/[0.05]"
+                  [class]="odd ? 'md:items-end' : ''"
+                >
+                  <div class="flex items-center gap-3" [class]="odd ? 'md:justify-end' : ''">
+                    <span class="font-mono text-xs tracking-[0.2em] text-accent uppercase"
+                      >Project</span
+                    >
+                    <span
+                      class="md:hidden font-mono text-xs text-secondary/40 uppercase tracking-widest"
+                      >{{ item.date }}</span
+                    >
+                  </div>
+
+                  <div
+                    class="flex items-center gap-3 flex-wrap"
+                    [class]="odd ? 'md:justify-end' : ''"
+                  >
+                    <h3 class="font-mono text-xl lg:text-2xl text-secondary">{{ item.name }}</h3>
+                    <span
+                      class="inline-flex items-center gap-2 rounded-full border border-secondary/15 px-3 py-1 font-mono text-[11px] text-secondary/70"
+                    >
+                      <span
+                        class="size-1.5 rounded-full"
+                        [class]="
+                          item.status === 'in-progress'
+                            ? 'bg-accent animate-pulse'
+                            : item.status === 'shipped'
+                              ? 'bg-secondary'
+                              : 'bg-secondary/30'
+                        "
+                      ></span>
+                      {{ statusLabel[item.status] }}
+                    </span>
+                  </div>
+
+                  <p class="font-mono text-sm text-secondary/60 leading-relaxed max-w-md">
+                    {{ item.description }}
+                  </p>
+
+                  <div
+                    class="flex items-center flex-wrap gap-x-6 gap-y-4"
+                    [class]="odd ? 'md:justify-end' : ''"
+                  >
+                    <ul class="flex items-center flex-wrap gap-2">
+                      @for (tech of item.stack; track tech.slug) {
+                        <li
+                          class="size-9 rounded-lg border border-secondary/10 bg-primary/60 flex items-center justify-center"
+                          [title]="tech.name"
+                        >
+                          <img
+                            class="size-5 opacity-70"
+                            width="20"
+                            height="20"
+                            loading="lazy"
+                            [src]="'https://cdn.simpleicons.org/' + tech.slug + '/fafafa'"
+                            [alt]="tech.name"
+                          />
+                        </li>
+                      }
+                    </ul>
+
+                    <!-- external link: only rendered when the project has a url -->
+                    @if (item.url) {
+                      <a
+                        class="group inline-flex items-center gap-1.5 font-mono text-sm text-secondary/70 hover:text-secondary transition-colors duration-300"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        [href]="item.url"
+                        [attr.aria-label]="'Visit ' + item.name + ' (opens in a new tab)'"
+                      >
+                        Visit project
+                        <svg
+                          class="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M7 17 17 7M8 7h9v9" />
+                        </svg>
+                      </a>
+                    }
+                  </div>
+                </article>
+              }
+            </div>
+          </li>
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!--
+  Skills: generated from `skills` in app.ts, nothing to edit here when you add one.
+  lg and up: a graph. Core skills sit in the middle, proficient skills on the inner ring and
+  familiar ones on the outer ring, grouped by category. Hovering (or clicking) a skill lights up
+  the skills it was used with and lists the projects in the side panel.
+  Below lg: grouped chips; tapping a skill shows its projects right under its group.
+-->
+<section
+  id="skills"
+  class="relative bg-primary border-t border-secondary/10 lg:z-10 lg:rounded-b-[4rem] lg:border-b lg:shadow-[0_30px_80px_-20px_rgba(47,21,244,0.3)]"
+>
+  <div class="site-container py-24 lg:py-28 lg:min-h-dvh lg:flex lg:flex-col lg:justify-center">
+    <header class="text-center max-w-2xl mx-auto mb-12 lg:mb-14">
+      <span class="font-mono tracking-[0.3em] text-accent uppercase">Skills</span>
+      <h2 class="font-mono text-3xl lg:text-5xl text-secondary tracking-wide mt-6">
+        What I build with
+      </h2>
+      <p class="font-mono text-secondary/60 text-sm lg:text-base mt-6">
+        <span class="hidden lg:inline">Hover</span><span class="lg:hidden">Tap</span> a skill to see
+        the projects it shows up in.
+      </p>
+    </header>
+
+    <!-- lg and up: graph + detail panel -->
+    <div class="hidden lg:grid lg:grid-cols-[1fr_16rem] xl:grid-cols-[1fr_20rem] gap-8">
+      <div
+        #skillGraph
+        class="relative h-[clamp(480px,64dvh,680px)] rounded-3xl border border-secondary/10 bg-secondary/[0.02] overflow-hidden"
+        (click)="clearPin()"
+      >
+        <svg class="absolute inset-0 size-full pointer-events-none" aria-hidden="true">
+          @for (ring of graphRings(); track $index) {
+            <ellipse
+              cx="50%"
+              cy="50%"
+              fill="none"
+              stroke-dasharray="2 6"
+              class="stroke-secondary/10"
+              [attr.rx]="ring.rx + '%'"
+              [attr.ry]="ring.ry + '%'"
+            />
+          }
+          @for (line of graphLines(); track line.id) {
+            <line
+              stroke-width="1"
+              class="stroke-accent/50"
+              [attr.x1]="line.x1 + '%'"
+              [attr.y1]="line.y1 + '%'"
+              [attr.x2]="line.x2 + '%'"
+              [attr.y2]="line.y2 + '%'"
+            />
+          }
+        </svg>
+
+        @for (node of graphNodes(); track node.id) {
+          @if (node.skill; as skill) {
+            <button
+              type="button"
+              class="absolute -translate-x-1/2 -translate-y-1/2"
+              [class]="skillClass(skill)"
+              [style.left.%]="node.x"
+              [style.top.%]="node.y"
+              [attr.aria-pressed]="pinnedSlug() === skill.slug"
+              (pointerenter)="hoverSkill($event, skill.slug)"
+              (pointerleave)="unhoverSkill($event)"
+              (click)="pinSkill($event, skill.slug)"
+            >
+              <img [class]="iconClass(skill)" [src]="iconUrl(skill.slug)" alt="" width="20" height="20" loading="lazy" />
+              {{ skill.name }}
+            </button>
+          } @else {
+            <span
+              class="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-mono text-[11px] tracking-[0.2em] text-secondary/30 uppercase pointer-events-none"
+              [style.left.%]="node.x"
+              [style.top.%]="node.y"
+              >{{ node.label }}</span
+            >
+          }
+        }
+      </div>
+
+      <aside
+        class="rounded-3xl border border-secondary/10 bg-secondary/[0.03] backdrop-blur p-6 flex flex-col"
+      >
+        @if (activeSkill(); as skill) {
+          <ng-container *ngTemplateOutlet="skillDetail; context: { $implicit: skill }" />
+        } @else {
+          <p class="font-mono text-sm text-secondary/60 leading-relaxed">
+            Hover a skill to see where I've used it. Click one to keep it selected.
+          </p>
+        }
+
+        <ul class="mt-auto pt-8 space-y-3 font-mono text-xs text-secondary/60">
+          <li class="flex items-center gap-3">
+            <span
+              class="size-2.5 rounded-full bg-accent shadow-[0_0_12px_rgba(47,21,244,0.8)]"
+            ></span>
+            Center: core skills
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="size-2.5 rounded-full border border-secondary/40"></span>
+            Inner ring: proficient
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="size-2.5 rounded-full border border-secondary/15"></span>
+            Outer ring: familiar
+          </li>
+        </ul>
+      </aside>
+    </div>
+
+    <!-- below lg: grouped chips -->
+    <div class="lg:hidden flex flex-col gap-10">
+      @for (group of skillGroups; track group.name) {
+        <div>
+          <h3
+            class="font-mono text-xs tracking-[0.2em] uppercase"
+            [class]="group.name === 'Core' ? 'text-accent' : 'text-secondary/40'"
+          >
+            {{ group.name }}
+          </h3>
+
+          <div class="mt-4 flex flex-wrap gap-2">
+            @for (skill of group.skills; track skill.slug) {
+              <button
+                type="button"
+                [class]="skillClass(skill)"
+                [attr.aria-pressed]="pinnedSlug() === skill.slug"
+                (pointerenter)="hoverSkill($event, skill.slug)"
+                (pointerleave)="unhoverSkill($event)"
+                (click)="pinSkill($event, skill.slug)"
+              >
+                <img [class]="iconClass(skill)" [src]="iconUrl(skill.slug)" alt="" width="20" height="20" loading="lazy" />
+                {{ skill.name }}
+              </button>
+            }
+          </div>
+
+          @if (pinnedSkill(); as skill) {
+            @if (groupName(skill) === group.name) {
+              <div class="mt-4 rounded-2xl border border-secondary/10 bg-secondary/[0.03] p-5">
+                <ng-container *ngTemplateOutlet="skillDetail; context: { $implicit: skill }" />
+              </div>
+            }
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- shared by the desktop panel and the mobile card -->
+  <ng-template #skillDetail let-skill>
+    <div class="flex items-center gap-3">
+      <img class="size-8" [src]="iconUrl(skill.slug)" alt="" width="32" height="32" />
+      <div>
+        <p class="font-mono text-lg text-secondary">{{ skill.name }}</p>
+        <p class="font-mono text-xs text-secondary/40 uppercase tracking-widest">
+          {{ levelText(skill) }} · {{ skill.category }}
+        </p>
+      </div>
+    </div>
+
+    <p class="mt-6 font-mono text-xs tracking-[0.2em] text-secondary/40 uppercase">Used in</p>
+    <ul class="mt-3 space-y-2">
+      @for (project of projectsFor(skill.slug); track project.name) {
+        <li class="flex items-center justify-between gap-3 font-mono text-sm text-secondary/80">
+          <span>{{ project.name }}</span>
+          <span class="text-xs text-secondary/40 capitalize">{{ project.date }}</span>
+        </li>
+      } @empty {
+        <li class="font-mono text-sm text-secondary/40">No listed project yet.</li>
+      }
+    </ul>
+  </ng-template>
+</section>
+
+<!--
+  Contact: the mirror image of the hero -> Work transition. From lg up, this section is pinned
+  underneath the Skills section (-mt-[100dvh] tucks it under, Skills is z-10), and is uncovered as
+  Skills scrolls away. While that happens the content rises into place and the accent halo, now
+  half-visible at the TOP, slides down (see contactTransform / haloTransform in app.ts).
+  Below lg it is a normal section.
+-->
+<section #contactWrapper class="relative lg:h-[200dvh] lg:-mt-[100dvh]">
+  <!-- anchor for #contact: one viewport down on lg, so the link lands on the fully revealed section -->
+  <span
+    id="contact"
+    class="absolute top-0 lg:top-[100dvh] scroll-mt-20 lg:scroll-mt-0"
+    aria-hidden="true"
+  ></span>
+
+  <div class="relative bg-primary overflow-hidden lg:sticky lg:top-0 lg:h-dvh">
+    <!-- accent halo, callback to the hero: now half visible at the top -->
+    <div
+      class="pointer-events-none absolute left-1/2 -translate-x-1/2 top-0 -translate-y-1/2 rounded-full bg-accent/40 blur-[clamp(90px,20vw,250px)] size-[max(70dvw,50dvh)] lg:size-[max(40dvw,50dvh)] will-change-transform"
+      [style.transform]="haloTransform()"
+    ></div>
+
+    <div
+      class="relative site-container min-h-dvh lg:min-h-0 lg:h-full pt-24 pb-16 lg:pt-20 lg:pb-12 flex items-center will-change-transform"
+      [style.transform]="contactTransform()"
+    >
+      <div class="w-full grid lg:grid-cols-2 gap-12 lg:gap-24 lg:short:gap-16 items-center">
+        <!-- intro + links -->
+        <div>
+          <span class="font-mono tracking-[0.3em] text-accent uppercase">Contact</span>
+          <h2 class="font-mono text-4xl lg:text-6xl lg:short:text-5xl lg:xshort:text-4xl text-secondary tracking-wide mt-6 short:mt-4">
+            Let's build something together
+          </h2>
+          <p class="font-mono text-secondary/60 text-sm lg:text-base mt-6 short:mt-4 lg:xshort:hidden max-w-md">
+            Have a project, a role, or a question? Send a message, or reach out directly.
+          </p>
+
+          <!-- availability status (edit `availability` in app.ts) -->
+          <span
+            class="mt-8 short:mt-5 inline-flex items-center gap-3 rounded-full border border-secondary/15 bg-secondary/[0.03] backdrop-blur px-4 py-2 font-mono text-xs tracking-[0.2em] text-secondary/80 uppercase"
+          >
+            <span class="relative flex size-2">
+              @if (availability.open) {
+                <span
+                  class="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-75"
+                ></span>
+              }
+              <span
+                class="relative inline-flex size-2 rounded-full"
+                [class]="availability.open ? 'bg-accent' : 'bg-secondary/30'"
+              ></span>
+            </span>
+            {{ availability.label }}
+            <span class="hidden sm:inline text-secondary/40 normal-case tracking-normal"
+              >· {{ availability.note }}</span
+            >
+          </span>
+
+          <ul class="mt-6 short:mt-4 flex flex-col gap-3 short:gap-2 max-w-md">
+            @for (link of contactLinks; track link.label) {
+              <li>
+                <a
+                  class="group flex items-center gap-4 rounded-2xl border border-secondary/10 bg-secondary/[0.03] backdrop-blur px-4 py-3 short:py-2 transition-colors duration-300 hover:border-secondary/25 hover:bg-secondary/[0.05]"
+                  [href]="link.href"
+                  [attr.target]="link.href.startsWith('http') ? '_blank' : null"
+                  [attr.rel]="link.href.startsWith('http') ? 'noopener noreferrer' : null"
+                  [attr.data-umami-event]="'contact-' + link.icon"
+                >
+                  <span
+                    class="size-10 short:size-9 shrink-0 rounded-lg border border-secondary/10 bg-primary/60 flex items-center justify-center text-secondary/70 transition-colors duration-300 group-hover:text-secondary"
+                  >
+                    @switch (link.icon) {
+                      @case ('github') {
+                        <svg
+                          class="size-5"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"
+                          />
+                          <path d="M9 18c-4.51 2-5-2-7-2" />
+                        </svg>
+                      }
+                      @case ('linkedin') {
+                        <svg
+                          class="size-5"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+                          />
+                          <rect width="4" height="12" x="2" y="9" />
+                          <circle cx="4" cy="4" r="2" />
+                        </svg>
+                      }
+                      @case ('mail') {
+                        <svg
+                          class="size-5"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                        >
+                          <rect width="20" height="16" x="2" y="4" rx="2" />
+                          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                        </svg>
+                      }
+                    }
+                  </span>
+
+                  <span class="flex-1 min-w-0">
+                    <span class="block font-mono text-sm text-secondary">{{ link.label }}</span>
+                    <span class="block font-mono text-xs text-secondary/50 truncate">{{
+                      link.value
+                    }}</span>
+                  </span>
+
+                  <svg
+                    class="size-4 shrink-0 text-secondary/50 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-secondary"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M7 17 17 7M8 7h9v9" />
+                  </svg>
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+
+        <!-- message form (posts to Formspree) -->
+        <form
+          #contactForm
+          class="rounded-3xl border border-secondary/10 bg-secondary/[0.03] backdrop-blur p-6 lg:p-8 lg:short:p-6 flex flex-col gap-5 short:gap-4"
+          (submit)="sendMessage($event, contactForm)"
+          (input)="clearContactStatus()"
+        >
+          <div class="flex flex-col gap-2">
+            <label
+              for="contact-email"
+              class="font-mono text-xs tracking-[0.2em] text-secondary/40 uppercase"
+              >Your email</label
+            >
+            <input
+              id="contact-email"
+              name="email"
+              type="email"
+              required
+              autocomplete="email"
+              placeholder="you@company.com"
+              class="w-full rounded-xl border border-secondary/15 bg-primary/60 px-4 py-3 font-mono text-sm text-secondary placeholder:text-secondary/30 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/25"
+            />
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label
+              for="contact-message"
+              class="font-mono text-xs tracking-[0.2em] text-secondary/40 uppercase"
+              >Message</label
+            >
+            <textarea
+              id="contact-message"
+              name="message"
+              required
+              minlength="10"
+              rows="4"
+              placeholder="Tell me about your project…"
+              class="w-full resize-none rounded-xl border border-secondary/15 bg-primary/60 px-4 py-3 font-mono text-sm text-secondary placeholder:text-secondary/30 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/25"
+            ></textarea>
+          </div>
+
+          <!-- spam trap (humans never see it) + email subject -->
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" />
+          <input type="hidden" name="_subject" value="New message from the portfolio" />
+
+          <button
+            type="submit"
+            class="group inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3 font-mono text-sm text-secondary shadow-[0_0_24px_rgba(47,21,244,0.35)] transition hover:shadow-[0_0_32px_rgba(47,21,244,0.55)] disabled:opacity-50 disabled:cursor-not-allowed"
+            [disabled]="contactStatus() === 'sending'"
+          >
+            {{ contactStatus() === 'sending' ? 'Sending…' : 'Send message' }}
+            <svg
+              class="size-4 transition-transform duration-300 group-hover:translate-x-0.5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </button>
+
+          <p
+            class="min-h-5 font-mono text-xs"
+            role="status"
+            aria-live="polite"
+            [class]="contactStatus() === 'error' ? 'text-secondary' : 'text-secondary/60'"
+          >
+            @switch (contactStatus()) {
+              @case ('sent') {
+                Thanks! Your message is on its way.
+              }
+              @case ('error') {
+                {{ contactError() }}
+              }
+            }
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <p class="absolute bottom-6 inset-x-0 text-center font-mono text-xs text-secondary/30">
+      © {{ year }} Habib Bekir
+    </p>
+  </div>
+</section>
+
+<div
+  #cursorFollower
+  id="cursor-follower"
+  class="bg-accent/40 blur-2xl rounded-full size-12 any-pointer-coarse:hidden fixed z-50"
+></div>
