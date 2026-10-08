@@ -577,8 +577,15 @@ export class App implements AfterViewInit {
     this.contactStatus.set('error');
   }
 
+  // Angular keeps only one host listener per event per component, so every scroll/resize-driven
+  // effect has to be dispatched from this single handler.
   @HostListener('window:scroll')
   @HostListener('window:resize')
+  onViewportChange() {
+    this.updateActivePanel();
+    this.updateContactReveal();
+  }
+
   updateContactReveal() {
     // Contact is only pinned / revealed from lg up; below that it is a normal section.
     if (!window.matchMedia('(min-width: 1024px)').matches) {
@@ -610,8 +617,6 @@ export class App implements AfterViewInit {
     this.follower().nativeElement.style.transform = `translate3d(${x}px, ${y}px, 0)`;
   }
 
-  @HostListener('window:scroll')
-  @HostListener('window:resize')
   updateActivePanel() {
     const el = this.pinWrapper().nativeElement;
     const rect = el.getBoundingClientRect();
