@@ -75,6 +75,16 @@ type ContactStatus = 'idle' | 'sending' | 'sent' | 'error';
 
 const CONTACT_ENDPOINT = 'https://formspree.io/f/mgokpkyd';
 
+/** Umami tracker (loaded in index.html); missing on the server, before it loads, or when blocked. */
+declare global {
+  interface Window {
+    umami?: { track(event: string): void };
+  }
+}
+
+/** Section ids reported to Umami as `section-<id>` events, once per visit. */
+const TRACKED_SECTIONS = ['hero', 'work', 'skills', 'contact'];
+
 /** Pill styles per level. If you change sizes here, update PILL in skill-layout.ts too. */
 const LEVEL_CLASS: Record<SkillLevel, string> = {
   core: 'px-4 py-2 text-base border-accent/60 bg-accent/15 text-secondary shadow-[0_0_30px_rgba(47,21,244,0.35)]',
@@ -312,6 +322,20 @@ export class App implements AfterViewInit {
         { name: 'Tailwind CSS', slug: 'tailwindcss' },
         { name: 'Symfony', slug: 'symfony' },
         { name: 'mySQL', slug: 'mysql' },
+      ],
+    },
+    {
+      type: 'project',
+      date: 'October 2026',
+      name: 'Exsys One',
+      description:
+        'Reimagining the Exsys platform as a single, unified application that consolidates all its features and services into one seamless experience for users.',
+      status: 'prototype',
+      stack: [
+        { name: 'Angular', slug: 'angular' },
+        { name: 'Tailwind CSS', slug: 'tailwindcss' },
+        { name: 'Claude', slug: 'claude' },
+        { name: 'Claude Code', slug: 'claudecode' },
       ],
     },
   ];
@@ -561,6 +585,7 @@ export class App implements AfterViewInit {
       if (response.ok) {
         form.reset();
         this.contactStatus.set('sent');
+        window.umami?.track('contact-sent');
         return;
       }
 
@@ -584,6 +609,30 @@ export class App implements AfterViewInit {
   onViewportChange() {
     this.updateActivePanel();
     this.updateContactReveal();
+    this.trackSections();
+  }
+
+  private readonly untrackedSections = new Set(TRACKED_SECTIONS);
+
+  /**
+   * Reports each section to Umami the first time it crosses the middle of the viewport.
+   * Also runs on window load, since the tracker script may load after the first check.
+   */
+  @HostListener('window:load')
+  trackSections() {
+    const umami = window.umami;
+    if (!umami || !this.untrackedSections.size) return;
+
+    const middle = window.innerHeight / 2;
+    for (const id of this.untrackedSections) {
+      const rect = document.getElementById(id)?.getBoundingClientRect();
+      // #contact is a zero-height anchor placed where the section is fully revealed (see app.html),
+      // so only its top matters; on lg this fires once Contact is half uncovered.
+      if (rect && rect.top <= middle && (id === 'contact' || rect.bottom > middle)) {
+        umami.track(`section-${id}`);
+        this.untrackedSections.delete(id);
+      }
+    }
   }
 
   updateContactReveal() {
@@ -602,6 +651,7 @@ export class App implements AfterViewInit {
     // instead of waiting for the first scroll/resize event.
     this.updateActivePanel();
     this.updateContactReveal();
+    this.trackSections();
 
     // (Re)compute the skill graph whenever its container changes size.
     const observer = new ResizeObserver(() => this.zone.run(() => this.layoutGraph()));

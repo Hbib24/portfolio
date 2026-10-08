@@ -746,6 +746,7 @@
                   [href]="link.href"
                   [attr.target]="link.href.startsWith('http') ? '_blank' : null"
                   [attr.rel]="link.href.startsWith('http') ? 'noopener noreferrer' : null"
+                  [attr.data-umami-event]="'contact-' + link.icon"
                 >
                   <span
                     class="size-10 short:size-9 shrink-0 rounded-lg border border-secondary/10 bg-primary/60 flex items-center justify-center text-secondary/70 transition-colors duration-300 group-hover:text-secondary"
