@@ -1,19 +1,69 @@
+<!-- Below sm the links move into a dropdown panel; the header turns opaque while it is open. -->
 <header
-  class="bg-primary/20 backdrop-blur py-4 fixed top-0 z-50 w-full animate__fadeInDown animate__animated"
+  #siteHeader
+  class="backdrop-blur py-4 fixed top-0 z-50 w-full animate__fadeInDown animate__animated transition-colors duration-300"
+  [class]="menuOpen() ? 'bg-primary/95' : 'bg-primary/20'"
 >
   <div class="site-container flex justify-between items-center">
-    <a href="#hero" class="text-2xl sm:text-3xl text-secondary whitespace-nowrap select-none">
+    <a
+      href="#hero"
+      class="text-2xl sm:text-3xl text-secondary whitespace-nowrap select-none"
+      (click)="closeMenu()"
+    >
       HABIB
       <span class="font-light!">BEKIR</span>
     </a>
-    <nav>
-      <ul class="flex gap-5 sm:gap-8 text-secondary/80 *:hover:text-secondary font-mono text-sm sm:text-lg">
-        <li><a href="#work">Work</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#contact">Contact</a></li>
+
+    <nav class="hidden sm:block">
+      <ul class="flex gap-8 text-secondary/80 *:hover:text-secondary font-mono text-lg">
+        @for (link of navLinks; track link.href) {
+          <li><a [href]="link.href">{{ link.label }}</a></li>
+        }
       </ul>
     </nav>
+
+    <!-- menu toggle: the two bars cross into an X while open -->
+    <button
+      type="button"
+      class="sm:hidden relative size-10 -mr-2 flex items-center justify-center text-secondary/80 hover:text-secondary"
+      aria-controls="mobile-menu"
+      [attr.aria-expanded]="menuOpen()"
+      [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'"
+      (click)="menuOpen.set(!menuOpen())"
+    >
+      <span
+        class="absolute h-px w-5 bg-current transition-transform duration-300"
+        [class]="menuOpen() ? 'rotate-45' : '-translate-y-1'"
+      ></span>
+      <span
+        class="absolute h-px w-5 bg-current transition-transform duration-300"
+        [class]="menuOpen() ? '-rotate-45' : 'translate-y-1'"
+      ></span>
+    </button>
   </div>
+
+  <!-- mobile menu panel: grid-rows 0fr -> 1fr animates the height without measuring it -->
+  <nav
+    id="mobile-menu"
+    class="sm:hidden grid transition-[grid-template-rows] duration-300 ease-out"
+    [class]="menuOpen() ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'"
+    [attr.inert]="menuOpen() ? null : ''"
+  >
+    <ul class="overflow-hidden site-container font-mono text-secondary/80">
+      @for (link of navLinks; track link.href; let first = $first) {
+        <li class="border-secondary/10" [class.border-t]="!first" [class.mt-4]="first">
+          <a
+            [href]="link.href"
+            class="flex items-center justify-between py-4 text-lg hover:text-secondary"
+            (click)="closeMenu()"
+          >
+            {{ link.label }}
+            <span class="text-secondary/30" aria-hidden="true">→</span>
+          </a>
+        </li>
+      }
+    </ul>
+  </nav>
 </header>
 
 <!--

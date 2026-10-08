@@ -115,6 +115,29 @@ export class App implements AfterViewInit {
   protected readonly title = signal('portfolio');
   private readonly follower = viewChild.required<ElementRef<HTMLDivElement>>('cursorFollower');
   private readonly pinWrapper = viewChild.required<ElementRef<HTMLDivElement>>('pinWrapper');
+  private readonly siteHeader = viewChild.required<ElementRef<HTMLElement>>('siteHeader');
+
+  /** Navigation links, shown inline from sm up and in the menu panel below that. */
+  protected readonly navLinks = [
+    { label: 'Work', href: '#work' },
+    { label: 'Skills', href: '#skills' },
+    { label: 'Contact', href: '#contact' },
+  ];
+
+  /** Mobile menu (below sm). Closes on link click, Escape, or a click outside the header. */
+  protected readonly menuOpen = signal(false);
+
+  @HostListener('document:keydown.escape')
+  closeMenu() {
+    this.menuOpen.set(false);
+  }
+
+  @HostListener('document:click', ['$event'])
+  closeMenuOnOutsideClick(event: MouseEvent) {
+    if (this.menuOpen() && !this.siteHeader().nativeElement.contains(event.target as Node)) {
+      this.menuOpen.set(false);
+    }
+  }
 
   /** Hero pin has 3 panels: H1 intro, desktop mockup, mobile mockup. */
   private readonly panelCount = 3;
